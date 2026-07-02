@@ -966,6 +966,21 @@
                 background: white;
             }
 
+            .mini-toggle, .gst-toggle-row, .ol-emoji, .ol-del, .pay-icon, .nav-icon, .brand-icon {
+                display: none !important;
+            }
+
+            .qty-input {
+                border: none !important;
+                background: transparent !important;
+                -moz-appearance: textfield;
+            }
+            .qty-input::-webkit-outer-spin-button,
+            .qty-input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
             /* Thermal receipt look */
             body::before {
                 content: '';
@@ -1119,7 +1134,7 @@
 
                     <!-- Print-only receipt header -->
                     <div class="receipt-header" id="receiptHeader">
-                        <h2>GP Home Foods</h2>
+                        <h2>GP Home Foods and Restaurants</h2>
                         <p>Authentic South Indian Restaurant<br />
                             <span id="rAddress">Address will be updated</span><br />
                             Ph: <span id="rPhone">Phone will be updated</span>
@@ -1147,13 +1162,19 @@
                             <span>Subtotal</span>
                             <span class="val" id="tSubtotal">₹0</span>
                         </div>
-                        <div class="gst-row">
+                        <div class="gst-row" id="sgstRow" style="display:none;">
+                            <span class="gst-label">SGST (2.5%)</span>
+                            <span class="val" id="tSgst" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem">₹0</span>
+                        </div>
+                        <div class="gst-row" id="cgstRow" style="display:none;">
+                            <span class="gst-label">CGST (2.5%)</span>
+                            <span class="val" id="tCgst" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem">₹0</span>
+                        </div>
+                        <div class="gst-row gst-toggle-row">
                             <span class="gst-label">
                                 <button class="mini-toggle" id="gstToggle" onclick="toggleGst()"></button>
-                                GST (5%)
+                                Apply GST
                             </span>
-                            <span class="val" id="tGst"
-                                style="font-family:'JetBrains Mono',monospace;font-size:0.82rem">₹0</span>
                         </div>
                         <div class="total-divider"></div>
                         <div class="total-row grand">
@@ -1335,6 +1356,18 @@
             renderOrder();
         }
 
+        function setQty(id, val) {
+            const line = order.find(l => l.dish.id === id);
+            if (!line) return;
+            const v = parseInt(val, 10);
+            if (isNaN(v) || v <= 0) {
+                removeLine(id);
+            } else {
+                line.qty = v;
+                renderOrder();
+            }
+        }
+
         function removeLine(id) {
             order = order.filter(l => l.dish.id !== id);
             renderOrder();
@@ -1359,11 +1392,12 @@
                 div.className = 'order-line';
                 div.innerHTML = `
       <span class="ol-emoji">${l.dish.emoji}</span>
-      <span class="ol-name">${esc(l.dish.name)}</span>
+      <div class="ol-details" style="flex:1; display:flex; gap:10px; align-items:center; min-width:0;">
+          <span class="ol-name">${esc(l.dish.name)}</span>
+          <span class="ol-rate" style="width:45px; font-family:'JetBrains Mono', monospace; font-size: 0.8rem; color:var(--clay-lt)">₹${fmt(l.dish.price)}</span>
+      </div>
       <div class="ol-qty">
-        <button class="qty-btn" onclick="changeQty('${l.dish.id}',-1)">−</button>
-        <span class="qty-num">${l.qty}</span>
-        <button class="qty-btn" onclick="changeQty('${l.dish.id}',1)">+</button>
+        <input type="number" class="qty-input" style="width:40px; padding:2px; text-align:center; font-family:'JetBrains Mono', monospace; border:1.5px solid #DDD5C4; border-radius:4px; outline:none; background:#fff; font-size: 0.85rem; color: var(--clay);" value="${l.qty}" min="1" onchange="setQty('${l.dish.id}', this.value)">
       </div>
       <span class="ol-total">₹${fmt(l.dish.price * l.qty)}</span>
       <button class="ol-del" onclick="removeLine('${l.dish.id}')">✕</button>`;
@@ -1382,10 +1416,24 @@
         // ══ TOTALS ════════════════════════════════════════════
         function updateTotals() {
             const subtotal = order.reduce((s, l) => s + l.dish.price * l.qty, 0);
-            const gst = gstOn ? Math.round(subtotal * 0.05) : 0;
+            const sgst = gstOn ? Math.round(subtotal * 0.025) : 0;
+            const cgst = gstOn ? Math.round(subtotal * 0.025) : 0;
+            const gst = sgst + cgst;
             const total = subtotal + gst;
             document.getElementById('tSubtotal').textContent = '₹' + fmt(subtotal);
-            document.getElementById('tGst').textContent = '₹' + fmt(gst);
+            
+            const sgstRow = document.getElementById('sgstRow');
+            const cgstRow = document.getElementById('cgstRow');
+            if (gstOn) {
+                sgstRow.style.display = 'flex';
+                cgstRow.style.display = 'flex';
+                document.getElementById('tSgst').textContent = '₹' + fmt(sgst);
+                document.getElementById('tCgst').textContent = '₹' + fmt(cgst);
+            } else {
+                sgstRow.style.display = 'none';
+                cgstRow.style.display = 'none';
+            }
+
             document.getElementById('tTotal').textContent = '₹' + fmt(total);
             return { subtotal, gst, total };
         }
