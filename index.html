@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GP Home Foods – Authentic South Indian Restaurant</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green: #1B3A2D;
+            --green-lt: #264D3B;
+            --ivory: #F7F0E3;
+            --coconut: #EDE0C8;
+            --gold: #D4900A;
+            --gold-lt: #F2B733;
+            --clay: #3C1F0F;
+            --clay-lt: #6B3A20;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--ivory);
+            color: var(--clay);
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ─────────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 48px;
+            background: rgba(27, 58, 45, 0.93);
+            backdrop-filter: blur(6px);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold-lt);
+            letter-spacing: 0.04em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--coconut);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold-lt);
+        }
+
+        .nav-links .login-btn {
+            border: 1px solid var(--gold);
+            padding: 6px 14px;
+            border-radius: 2px;
+            color: var(--gold-lt);
+            margin-left: 8px;
+        }
+
+        .nav-links .login-btn:hover {
+            background: var(--gold);
+            color: var(--green);
+        }
+
+        /* ── HERO ────────────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            background: var(--green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative leaf pattern */
+        .leaf-bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0.07;
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            font-size: 0.78rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--gold-lt);
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 800;
+            color: var(--ivory);
+            line-height: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .hero-title span {
+            color: var(--gold);
+            font-style: italic;
+        }
+
+        .hero-sub {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.45rem);
+            color: var(--coconut);
+            margin-top: 22px;
+            opacity: 0.85;
+            max-width: 520px;
+        }
+
+        .hero-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: 36px auto;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 14px 40px;
+            background: transparent;
+            border: 1.5px solid var(--gold);
+            color: var(--gold-lt);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.82rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: background 0.25s, color 0.25s;
+        }
+
+        .hero-cta:hover {
+            background: var(--gold);
+            color: var(--green);
+        }
+
+        /* scroll cue */
+        .scroll-cue {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--gold-lt);
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            animation: nudge 2.2s ease-in-out infinite;
+        }
+
+        .scroll-cue::after {
+            content: '';
+            width: 1px;
+            height: 36px;
+            background: var(--gold-lt);
+        }
+
+        @keyframes nudge {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(6px);
+            }
+        }
+
+        /* ── ABOUT STRIP ─────────────────────────────────── */
+        .about-strip {
+            background: var(--coconut);
+            padding: 72px 24px;
+            text-align: center;
+        }
+
+        .about-strip p {
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 1.08rem;
+            line-height: 1.85;
+            color: var(--clay-lt);
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .section-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
+            font-weight: 600;
+            color: var(--green);
+            margin-bottom: 20px;
+            line-height: 1.15;
+        }
+
+        /* ── SPECIALTIES ─────────────────────────────────── */
+        .specials {
+            background: var(--ivory);
+            padding: 88px 24px;
+            text-align: center;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            max-width: 960px;
+            margin: 48px auto 0;
+        }
+
+        .card {
+            background: var(--green);
+            border-radius: 4px;
+            padding: 44px 28px 36px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            font-size: 2.4rem;
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--gold-lt);
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 0.88rem;
+            color: var(--coconut);
+            opacity: 0.8;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* ── CONTACT ─────────────────────────────────────── */
+        .contact {
+            background: var(--green);
+            padding: 96px 24px;
+            text-align: center;
+        }
+
+        .contact .section-heading {
+            color: var(--ivory);
+        }
+
+        .contact .section-label {
+            color: var(--gold-lt);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+            max-width: 860px;
+            margin: 56px auto 0;
+        }
+
+        .contact-card {
+            background: var(--green-lt);
+            border: 1px solid rgba(212, 144, 10, 0.2);
+            border-radius: 4px;
+            padding: 40px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(212, 144, 10, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .contact-card h4 {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2px;
+        }
+
+        .contact-card p,
+        .contact-card a {
+            font-size: 1rem;
+            color: var(--coconut);
+            text-decoration: none;
+            line-height: 1.65;
+        }
+
+        .contact-card a:hover {
+            color: var(--gold-lt);
+        }
+
+        /* Placeholder style */
+        .placeholder {
+            display: inline-block;
+            background: rgba(212, 144, 10, 0.12);
+            border: 1px dashed rgba(212, 144, 10, 0.4);
+            border-radius: 3px;
+            padding: 4px 14px;
+            color: var(--gold-lt);
+            font-style: italic;
+            font-size: 0.92rem;
+            opacity: 0.75;
+        }
+
+        /* ── HOURS ───────────────────────────────────────── */
+        .hours-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .hours-row span {
+            font-size: 0.92rem;
+            color: var(--coconut);
+            opacity: 0.85;
+        }
+
+        /* ── FOOTER ──────────────────────────────────────── */
+        footer {
+            background: var(--clay);
+            color: var(--coconut);
+            text-align: center;
+            padding: 28px 24px;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            opacity: 0.9;
+        }
+
+        footer span {
+            color: var(--gold);
+        }
+
+        /* ── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 600px) {
+            nav {
+                padding: 16px 20px;
+            }
+
+            .nav-links {
+                gap: 18px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">GP Home Foods</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li style="display: flex; align-items: center;"><a href="login.html" class="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <!-- Banana leaf SVG background -->
+        <svg class="leaf-bg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g fill="#A8D5BA">
+                <!-- Leaf 1 -->
+                <ellipse cx="200" cy="300" rx="180" ry="60" transform="rotate(-30 200 300)" />
+                <line x1="200" y1="300" x2="30" y2="240" stroke="#A8D5BA" stroke-width="3" />
+                <line x1="200" y1="300" x2="370" y2="355" stroke="#A8D5BA" stroke-width="3" />
+                <!-- veins -->
+                <line x1="120" y1="270" x2="135" y2="310" stroke="#A8D5BA" stroke-width="1.5" />
+                <line x1="160" y1="280" x2="175" y2="318" stroke="#A8D5BA" stroke-width="1.5" />
+                <line x1="240" y1="295" x2="255" y2="333" stroke="#A8D5BA" stroke-width="1.5" />
+                <line x1="290" y1="315" x2="305" y2="352" stroke="#A8D5BA" stroke-width="1.5" />
+                <!-- Leaf 2 -->
+                <ellipse cx="620" cy="160" rx="200" ry="55" transform="rotate(20 620 160)" />
+                <line x1="620" y1="160" x2="430" y2="125" stroke="#A8D5BA" stroke-width="3" />
+                <line x1="620" y1="160" x2="810" y2="195" stroke="#A8D5BA" stroke-width="3" />
+                <!-- Leaf 3 -->
+                <ellipse cx="500" cy="500" rx="220" ry="58" transform="rotate(-15 500 500)" />
+                <line x1="500" y1="500" x2="295" y2="462" stroke="#A8D5BA" stroke-width="3" />
+                <line x1="500" y1="500" x2="706" y2="538" stroke="#A8D5BA" stroke-width="3" />
+                <!-- Kolam-inspired dots -->
+                <circle cx="400" cy="80" r="4" />
+                <circle cx="420" cy="80" r="4" />
+                <circle cx="380" cy="80" r="4" />
+                <circle cx="400" cy="520" r="4" />
+                <circle cx="420" cy="520" r="4" />
+                <circle cx="380" cy="520" r="4" />
+                <circle cx="60" cy="400" r="4" />
+                <circle cx="60" cy="420" r="4" />
+                <circle cx="740" cy="180" r="4" />
+                <circle cx="740" cy="200" r="4" />
+            </g>
+        </svg>
+
+        <p class="hero-eyebrow">Since the heart of South India</p>
+        <h1 class="hero-title">GP Home <span>Foods</span></h1>
+        <div class="hero-divider"></div>
+        <p class="hero-sub">Savouring the true tastes of Tamil Nadu, Andhra Pradesh & beyond — one banana leaf at a time.</p>
+        <a class="hero-cta" href="#contact">Find Us</a>
+
+        <div class="scroll-cue">Scroll</div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about-strip" id="about">
+        <span class="section-label">Our Story</span>
+        <h2 class="section-heading">Rooted in Tradition</h2>
+        <p>
+            At GP Home Foods, every dish is a tribute to the timeless kitchens of South India.
+            We use age-old recipes, freshly ground masalas, and ingredients sourced from the heart
+            of Tamil Nadu to bring you flavours that are genuine, soulful, and unmistakably South Indian.
+            No shortcuts. No compromises. Just honest food served with warmth.
+        </p>
+    </section>
+
+    <!-- SPECIALTIES -->
+    <section class="specials" id="menu">
+        <span class="section-label">On the Leaf</span>
+        <h2 class="section-heading">What We're Known For</h2>
+        <div class="cards" id="indexCards">
+            <div class="card">
+                <div class="card-icon">🌿</div>
+                <h3>Banana Leaf Meals</h3>
+                <p>Full saapadu served the traditional way — rice, sambar, rasam, kootu, and all the sides.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🥞</div>
+                <h3>Dosas & Idlis</h3>
+                <p>Crisp golden dosas and pillowy soft idlis made from stone-ground batter, served fresh every morning.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🍲</div>
+                <h3>Chettinad Curries</h3>
+                <p>Bold, aromatic gravies from the kitchens of Chettinad — rich with kalpasi, marathi mokku & more.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">☕</div>
+                <h3>Filter Kaapi</h3>
+                <p>The perfect end to every meal — frothy, strong South Indian filter coffee in a traditional dabarah
+                    set.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+        <span class="section-label">Come Visit Us</span>
+        <h2 class="section-heading">Find & Reach Us</h2>
+        <div class="contact-grid">
+
+            <!-- Address -->
+            <div class="contact-card">
+                <div class="contact-icon">📍</div>
+                <h4>Address</h4>
+                <p class="placeholder">Address to be updated soon</p>
+            </div>
+
+            <!-- Phone -->
+            <div class="contact-card">
+                <div class="contact-icon">📞</div>
+                <h4>Phone</h4>
+                <a href="tel:+910000000000" class="placeholder">Contact to be updated soon</a>
+            </div>
+
+            <!-- Hours -->
+            <div class="contact-card">
+                <div class="contact-icon">🕐</div>
+                <h4>Hours</h4>
+                <div class="hours-row">
+                    <span>Mon – Sat &nbsp; 7:00 AM – 10:00 PM</span>
+                    <span>Sunday &nbsp;&nbsp;&nbsp; 7:00 AM – 3:00 PM</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 <span>GP Home Foods</span> &nbsp;·&nbsp; Authentic South Indian Restaurant &nbsp;·&nbsp; All rights
+            reserved.</p>
+    </footer>
+
+    <script>
+        async function loadFeaturedMenu() {
+            try {
+                const res = await fetch('/api/menu');
+                if (res.ok) {
+                    const menu = await res.json();
+                    const availableItems = menu.filter(m => m.available).slice(0, 4);
+                    
+                    if (availableItems.length > 0) {
+                        const cardsContainer = document.getElementById('indexCards');
+                        cardsContainer.innerHTML = '';
+                        availableItems.forEach(item => {
+                            cardsContainer.innerHTML += `
+                                <div class="card">
+                                    <div class="card-icon">${item.emoji || '🍽️'}</div>
+                                    <h3>${item.name}</h3>
+                                    <p>${item.desc || 'A delicious specialty from GP Home Foods.'}</p>
+                                </div>
+                            `;
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to load featured menu items', err);
+            }
+        }
+        loadFeaturedMenu();
+    </script>
+</body>
+</html>

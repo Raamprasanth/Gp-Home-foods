@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GP Home Foods — Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green: #1B3A2D;
+            --green-lt: #264D3B;
+            --green-dk: #122A20;
+            --green-hover: #1F4433;
+            --ivory: #F7F0E3;
+            --coconut: #EDE0C8;
+            --gold: #D4900A;
+            --gold-lt: #F2B733;
+            --clay: #3C1F0F;
+            --clay-lt: #6B3A20;
+            --sidebar-w: 240px;
+            --topbar-h: 64px;
+
+            --blue: #3B82F6;
+            --teal: #0D9488;
+            --rose: #E11D48;
+            --purple: #7C3AED;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Lato', sans-serif;
+            background: #F0EBE0;
+            color: var(--clay);
+        }
+
+        /* ══════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════ */
+        .app {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ══════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════ */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--green-dk);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Brand */
+        .sidebar-brand {
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(212, 144, 10, 0.15);
+            border: 1px solid rgba(212, 144, 10, 0.35);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            line-height: 1.15;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        .brand-text span {
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.8;
+        }
+
+        /* Nav */
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .nav-section-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(237, 224, 200, 0.35);
+            padding: 10px 10px 6px;
+            margin-top: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: background 0.15s;
+            text-decoration: none;
+            position: relative;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-item.active {
+            background: rgba(212, 144, 10, 0.14);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            bottom: 25%;
+            width: 3px;
+            background: var(--gold);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active .nav-icon {
+            background: rgba(212, 144, 10, 0.2);
+        }
+
+        .nav-label {
+            font-size: 0.85rem;
+            color: rgba(237, 224, 200, 0.65);
+            font-weight: 400;
+            flex: 1;
+        }
+
+        .nav-item.active .nav-label {
+            color: var(--gold-lt);
+            font-weight: 700;
+        }
+
+        .nav-badge {
+            font-size: 0.6rem;
+            background: var(--gold);
+            color: var(--green-dk);
+            border-radius: 10px;
+            padding: 2px 7px;
+            font-weight: 700;
+        }
+
+        /* Sidebar footer */
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-item.settings .nav-label {
+            color: rgba(237, 224, 200, 0.5);
+        }
+
+        .nav-item.settings:hover .nav-label {
+            color: rgba(237, 224, 200, 0.8);
+        }
+
+        /* User card */
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-top: 4px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--green-lt);
+            border: 1.5px solid rgba(212, 144, 10, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--gold-lt);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 0.78rem;
+            color: var(--coconut);
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 0.62rem;
+            color: var(--gold);
+            opacity: 0.7;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
+            transition: opacity 0.15s;
+            padding: 4px;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ══════════════════════════════════════
+       MAIN AREA
+    ══════════════════════════════════════ */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top bar */
+        .topbar {
+            height: var(--topbar-h);
+            background: var(--ivory);
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            flex-shrink: 0;
+        }
+
+        .topbar-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .topbar-left p {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.7;
+            margin-top: 1px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .topbar-date {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.6;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .notif-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.15rem;
+            padding: 6px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .notif-btn:hover {
+            background: var(--coconut);
+        }
+
+        .notif-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 7px;
+            height: 7px;
+            background: var(--rose);
+            border-radius: 50%;
+            border: 1.5px solid var(--ivory);
+        }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px;
+        }
+
+        /* ══════════════════════════════════════
+       DASHBOARD PAGE
+    ══════════════════════════════════════ */
+        .greeting {
+            margin-bottom: 28px;
+        }
+
+        .greeting-time {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .greeting h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: var(--green);
+            line-height: 1.2;
+        }
+
+        .greeting p {
+            font-size: 0.85rem;
+            color: var(--clay-lt);
+            margin-top: 5px;
+            opacity: 0.75;
+        }
+
+        /* Stat cards */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--ivory);
+            border-radius: 10px;
+            padding: 20px 20px 18px;
+            border: 1px solid #DDD5C4;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .stat-card.c-gold::after {
+            background: var(--gold);
+        }
+
+        .stat-card.c-teal::after {
+            background: var(--teal);
+        }
+
+        .stat-card.c-blue::after {
+            background: var(--blue);
+        }
+
+        .stat-card.c-rose::after {
+            background: var(--rose);
+        }
+
+        .stat-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            opacity: 0.7;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.7rem;
+            font-weight: 400;
+            color: var(--green);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-value small {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.up {
+            color: var(--teal);
+        }
+
+        .stat-change.down {
+            color: var(--rose);
+        }
+
+        .stat-icon-bg {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            font-size: 1.6rem;
+            opacity: 0.1;
+        }
+
+        /* Two-col row */
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Panel card */
+        .panel {
+            background: var(--ivory);
+            border-radius: 10px;
+            border: 1px solid #DDD5C4;
+            overflow: hidden;
+        }
+
+        .panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #DDD5C4;
+        }
+
+        .panel-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--green);
+        }
+
+        .panel-action {
+            font-size: 0.72rem;
+            color: var(--gold);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .panel-action:hover {
+            text-decoration: underline;
+        }
+
+        /* Recent orders table */
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            font-size: 0.62rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            opacity: 0.6;
+            text-align: left;
+            padding: 10px 20px;
+            border-bottom: 1px solid #DDD5C4;
+            font-weight: 700;
+        }
+
+        .orders-table td {
+            padding: 11px 20px;
+            font-size: 0.83rem;
+            color: var(--clay);
+            border-bottom: 1px solid rgba(221, 213, 196, 0.4);
+        }
+
+        .orders-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .orders-table tr:hover td {
+            background: rgba(237, 224, 200, 0.3);
+        }
+
+        .order-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.06em;
+        }
+
+        .order-type.dine {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--teal);
+        }
+
+        .order-type.del {
+            background: rgba(212, 144, 10, 0.12);
+            color: var(--gold);
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .status-badge.paid {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--teal);
+        }
+
+        .status-badge.pending {
+            background: rgba(212, 144, 10, 0.1);
+            color: var(--gold);
+        }
+
+        .status-badge.delivery {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--blue);
+        }
+
+        /* Top dishes */
+        .dish-list {
+            padding: 4px 0;
+        }
+
+        .dish-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 20px;
+            border-bottom: 1px solid rgba(221, 213, 196, 0.4);
+        }
+
+        .dish-item:last-child {
+            border-bottom: none;
+        }
+
+        .dish-rank {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold);
+            font-weight: 400;
+            width: 18px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .dish-name {
+            flex: 1;
+            font-size: 0.83rem;
+            color: var(--clay);
+        }
+
+        .dish-count {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.65;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .dish-bar-wrap {
+            width: 60px;
+            height: 4px;
+            background: rgba(212, 144, 10, 0.12);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .dish-bar {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+
+        /* Quick actions */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .quick-btn {
+            background: var(--ivory);
+            border: 1px solid #DDD5C4;
+            border-radius: 10px;
+            padding: 18px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .quick-btn:hover {
+            border-color: var(--gold);
+            box-shadow: 0 2px 12px rgba(212, 144, 10, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .quick-btn .q-icon {
+            font-size: 1.5rem;
+        }
+
+        .quick-btn .q-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            text-align: center;
+        }
+
+        /* ══════════════════════════════════════
+       PLACEHOLDER PAGE
+    ══════════════════════════════════════ */
+        .placeholder-page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            gap: 16px;
+            padding: 40px;
+        }
+
+        .placeholder-page.active {
+            display: flex;
+        }
+
+        .ph-icon {
+            font-size: 3.5rem;
+            opacity: 0.3;
+        }
+
+        .ph-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .ph-sub {
+            font-size: 0.9rem;
+            color: var(--clay-lt);
+            opacity: 0.65;
+            max-width: 360px;
+            line-height: 1.7;
+        }
+
+        .ph-tag {
+            display: inline-block;
+            background: rgba(212, 144, 10, 0.1);
+            border: 1px solid rgba(212, 144, 10, 0.25);
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+
+        /* ══════════════════════════════════════
+       REVENUE CHART PLACEHOLDER
+    ══════════════════════════════════════ */
+        .chart-area {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 100px;
+        }
+
+        .chart-bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .chart-bar {
+            width: 100%;
+            border-radius: 3px 3px 0 0;
+            background: rgba(27, 58, 45, 0.12);
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .chart-bar.highlight {
+            background: var(--green);
+        }
+
+        .chart-bar:hover {
+            background: var(--gold) !important;
+        }
+
+        .chart-day {
+            font-size: 0.6rem;
+            color: var(--clay-lt);
+            opacity: 0.5;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ══════════════════════════════════════
+       SCROLLBAR
+    ══════════════════════════════════════ */
+        .content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(27, 58, 45, 0.15);
+            border-radius: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .row-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            :root {
+                --sidebar-w: 200px;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ══ SIDEBAR ══════════════════════════════════ -->
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+                <a class="brand-logo" href="dashboard.html">
+                    <div class="brand-icon">🌿</div>
+                    <div class="brand-text">
+                        <strong>GP Home Foods</strong>
+                        <span>Staff Portal</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <span class="nav-section-label">Main</span>
+
+                <button class="nav-item active" onclick="navigate(this,'dashboard')" data-page="dashboard">
+                    <div class="nav-icon">🏠</div>
+                    <span class="nav-label">Dashboard</span>
+                </button>
+
+                <span class="nav-section-label">Operations</span>
+
+                <button class="nav-item" onclick="window.location.href='billing.html'" data-page="billing">
+                    <div class="nav-icon">🧾</div>
+                    <span class="nav-label">Billing</span>
+                    <span class="nav-badge">New</span>
+                </button>
+
+                <button class="nav-item" onclick="navigate(this,'delivery')" data-page="delivery">
+                    <div class="nav-icon">🛵</div>
+                    <span class="nav-label">Delivery Orders</span>
+                </button>
+
+                <span class="nav-section-label">Analytics</span>
+
+                <button class="nav-item" onclick="navigate(this,'sales')" data-page="sales">
+                    <div class="nav-icon">📊</div>
+                    <span class="nav-label">Sales Analysis</span>
+                </button>
+
+                <button class="nav-item" onclick="navigate(this,'revenue')" data-page="revenue">
+                    <div class="nav-icon">💰</div>
+                    <span class="nav-label">Revenue Analysis</span>
+                </button>
+
+                <span class="nav-section-label">Restaurant</span>
+
+                <button class="nav-item" onclick="window.location.href='menu.html'" data-page="menu">
+                    <div class="nav-icon">🍽️</div>
+                    <span class="nav-label">Menu</span>
+                </button>
+
+                <button class="nav-item" onclick="navigate(this,'employees')" data-page="employees">
+                    <div class="nav-icon">👥</div>
+                    <span class="nav-label">Employees</span>
+                </button>
+
+                <button class="nav-item" onclick="window.location.href='salary.html'" data-page="salaries">
+                    <div class="nav-icon">💼</div>
+                    <span class="nav-label">Salaries</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="nav-item settings" onclick="navigate(this,'settings')" data-page="settings">
+                    <div class="nav-icon">⚙️</div>
+                    <span class="nav-label">Settings</span>
+                </button>
+                <div class="user-card">
+                    <div class="user-avatar">GP</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Manager</div>
+                    </div>
+                    <button class="logout-btn" title="Logout" onclick="window.location.href='login.html'">⏻</button>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- ══ MAIN ══════════════════════════════════════ -->
+        <div class="main">
+
+            <!-- Top bar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h1 id="topbarTitle">Dashboard</h1>
+                    <p id="topbarSub">Overview of today's activity</p>
+                </div>
+                <div class="topbar-right">
+                    <span class="topbar-date" id="liveDate"></span>
+                    <button class="notif-btn" title="Notifications">
+                        🔔
+                        <span class="notif-dot"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+
+                <!-- ── DASHBOARD PAGE ── -->
+                <div id="page-dashboard">
+
+                    <!-- Greeting -->
+                    <div class="greeting">
+                        <p class="greeting-time" id="greetTime"></p>
+                        <h2 id="greetMsg">Welcome back 👋</h2>
+                        <p>Here's what's happening at GP Home Foods today.</p>
+                    </div>
+
+                    <!-- Quick actions -->
+                    <div class="quick-grid">
+                        <button class="quick-btn"
+                            onclick="navigate(document.querySelector('[data-page=billing]'),'billing')">
+                            <span class="q-icon">➕</span>
+                            <span class="q-label">New Bill</span>
+                        </button>
+                        <button class="quick-btn"
+                            onclick="navigate(document.querySelector('[data-page=delivery]'),'delivery')">
+                            <span class="q-icon">🛵</span>
+                            <span class="q-label">New Delivery</span>
+                        </button>
+                        <button class="quick-btn" onclick="navigate(document.querySelector('[data-page=menu]'),'menu')">
+                            <span class="q-icon">🍽️</span>
+                            <span class="q-label">Edit Menu</span>
+                        </button>
+                        <button class="quick-btn"
+                            onclick="navigate(document.querySelector('[data-page=employees]'),'employees')">
+                            <span class="q-icon">👥</span>
+                            <span class="q-label">Staff</span>
+                        </button>
+                    </div>
+
+                    <!-- Stat cards -->
+                    <div class="stat-grid">
+                        <div class="stat-card c-gold">
+                            <div class="stat-icon-bg">💰</div>
+                            <div class="stat-label">Today's Revenue</div>
+                            <div class="stat-value"><small>₹</small>4,820</div>
+                            <div class="stat-change up">▲ 12% vs yesterday</div>
+                        </div>
+                        <div class="stat-card c-teal">
+                            <div class="stat-icon-bg">🧾</div>
+                            <div class="stat-label">Bills Generated</div>
+                            <div class="stat-value">38</div>
+                            <div class="stat-change up">▲ 5 more than avg</div>
+                        </div>
+                        <div class="stat-card c-blue">
+                            <div class="stat-icon-bg">🛵</div>
+                            <div class="stat-label">Delivery Orders</div>
+                            <div class="stat-value">14</div>
+                            <div class="stat-change up">▲ 3 out for delivery</div>
+                        </div>
+                        <div class="stat-card c-rose">
+                            <div class="stat-icon-bg">👥</div>
+                            <div class="stat-label">Staff On Duty</div>
+                            <div class="stat-value">7</div>
+                            <div class="stat-change down">▼ 1 on leave today</div>
+                        </div>
+                    </div>
+
+                    <!-- Two-col row -->
+                    <div class="row-2">
+
+                        <!-- Recent orders -->
+                        <div class="panel">
+                            <div class="panel-head">
+                                <span class="panel-title">Recent Orders</span>
+                                <button class="panel-action"
+                                    onclick="navigate(document.querySelector('[data-page=billing]'),'billing')">View All
+                                    →</button>
+                            </div>
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order</th>
+                                        <th>Type</th>
+                                        <th>Items</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#0042</td>
+                                        <td><span class="order-type dine">🪑 Dine-in</span></td>
+                                        <td>Meals × 2</td>
+                                        <td>₹380</td>
+                                        <td><span class="status-badge paid">Paid</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#0041</td>
+                                        <td><span class="order-type del">🛵 Delivery</span></td>
+                                        <td>Dosa, Chutney</td>
+                                        <td>₹160</td>
+                                        <td><span class="status-badge delivery">On the way</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#0040</td>
+                                        <td><span class="order-type dine">🪑 Dine-in</span></td>
+                                        <td>Chettinad × 3</td>
+                                        <td>₹720</td>
+                                        <td><span class="status-badge paid">Paid</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#0039</td>
+                                        <td><span class="order-type del">🛵 Delivery</span></td>
+                                        <td>Idli × 4, Sambar</td>
+                                        <td>₹240</td>
+                                        <td><span class="status-badge pending">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#0038</td>
+                                        <td><span class="order-type dine">🪑 Dine-in</span></td>
+                                        <td>Filter Kaapi × 6</td>
+                                        <td>₹180</td>
+                                        <td><span class="status-badge paid">Paid</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Top dishes -->
+                        <div class="panel">
+                            <div class="panel-head">
+                                <span class="panel-title">Top Dishes Today</span>
+                                <button class="panel-action"
+                                    onclick="navigate(document.querySelector('[data-page=sales]'),'sales')">Full Report
+                                    →</button>
+                            </div>
+                            <div class="dish-list">
+                                <div class="dish-item">
+                                    <span class="dish-rank">#1</span>
+                                    <span class="dish-name">Banana Leaf Meals</span>
+                                    <span class="dish-count">42×</span>
+                                    <div class="dish-bar-wrap">
+                                        <div class="dish-bar" style="width:100%"></div>
+                                    </div>
+                                </div>
+                                <div class="dish-item">
+                                    <span class="dish-rank">#2</span>
+                                    <span class="dish-name">Masala Dosa</span>
+                                    <span class="dish-count">31×</span>
+                                    <div class="dish-bar-wrap">
+                                        <div class="dish-bar" style="width:74%"></div>
+                                    </div>
+                                </div>
+                                <div class="dish-item">
+                                    <span class="dish-rank">#3</span>
+                                    <span class="dish-name">Filter Kaapi</span>
+                                    <span class="dish-count">28×</span>
+                                    <div class="dish-bar-wrap">
+                                        <div class="dish-bar" style="width:67%"></div>
+                                    </div>
+                                </div>
+                                <div class="dish-item">
+                                    <span class="dish-rank">#4</span>
+                                    <span class="dish-name">Chettinad Chicken</span>
+                                    <span class="dish-count">19×</span>
+                                    <div class="dish-bar-wrap">
+                                        <div class="dish-bar" style="width:45%"></div>
+                                    </div>
+                                </div>
+                                <div class="dish-item">
+                                    <span class="dish-rank">#5</span>
+                                    <span class="dish-name">Idli (2 pcs)</span>
+                                    <span class="dish-count">17×</span>
+                                    <div class="dish-bar-wrap">
+                                        <div class="dish-bar" style="width:40%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Weekly revenue chart -->
+                    <div class="panel">
+                        <div class="panel-head">
+                            <span class="panel-title">This Week's Revenue</span>
+                            <button class="panel-action"
+                                onclick="navigate(document.querySelector('[data-page=revenue]'),'revenue')">Full
+                                Analysis →</button>
+                        </div>
+                        <div class="chart-area">
+                            <div class="chart-bars" id="chartBars"></div>
+                            <p
+                                style="font-size:0.68rem;color:var(--clay-lt);opacity:0.5;text-align:center;margin-top:4px;">
+                                Revenue in ₹ · Hover bars for details · Full chart in Revenue Analysis
+                            </p>
+                        </div>
+                    </div>
+
+                </div><!-- /page-dashboard -->
+
+                <!-- ── PLACEHOLDER PAGES ── -->
+                <div id="page-billing" class="placeholder-page">
+                    <div class="ph-icon">🧾</div>
+                    <h2 class="ph-title">Billing</h2>
+                    <p class="ph-sub">Create and manage dine-in and delivery bills, apply discounts, and print receipts.
+                    </p><span class="ph-tag">Coming Soon</span>
+                </div>
+                <div id="page-delivery" class="placeholder-page">
+                    <div class="ph-icon">🛵</div>
+                    <h2 class="ph-title">Delivery Orders</h2>
+                    <p class="ph-sub">Manage home delivery orders, track status, and assign delivery staff.</p><span
+                        class="ph-tag">Coming Soon</span>
+                </div>
+                <div id="page-sales" class="placeholder-page">
+                    <div class="ph-icon">📊</div>
+                    <h2 class="ph-title">Sales Analysis</h2>
+                    <p class="ph-sub">Discover your best-selling dishes, peak hours, and dine-in vs delivery breakdown.
+                    </p><span class="ph-tag">Coming Soon</span>
+                </div>
+                <div id="page-revenue" class="placeholder-page">
+                    <div class="ph-icon">💰</div>
+                    <h2 class="ph-title">Revenue Analysis</h2>
+                    <p class="ph-sub">Track daily, weekly, and monthly revenue trends with detailed charts and exports.
+                    </p><span class="ph-tag">Coming Soon</span>
+                </div>
+                <div id="page-menu" class="placeholder-page">
+                    <div class="ph-icon">🍽️</div>
+                    <h2 class="ph-title">Menu Management</h2>
+                    <p class="ph-sub">Add, edit, or remove dishes, set prices, and manage categories.</p><span
+                        class="ph-tag">Coming Soon</span>
+                </div>
+                <div id="page-employees" class="placeholder-page">
+                    <div class="ph-icon">👥</div>
+                    <h2 class="ph-title">Employees</h2>
+                    <p class="ph-sub">Manage staff profiles, roles, attendance, and contact details.</p><span
+                        class="ph-tag">Coming Soon</span>
+                </div>
+                <div id="page-salaries" class="placeholder-page">
+                    <div class="ph-icon">💼</div>
+                    <h2 class="ph-title">Salaries</h2>
+                    <p class="ph-sub">Calculate monthly pay, track advances and deductions, and mark salary payments.
+                    </p><span class="ph-tag">Coming Soon</span>
+                </div>
+                <div id="page-settings" class="placeholder-page">
+                    <div class="ph-icon">⚙️</div>
+                    <h2 class="ph-title">Settings</h2>
+                    <p class="ph-sub">Configure restaurant info, GST rates, printer settings, and user access.</p><span
+                        class="ph-tag">Coming Soon</span>
+                </div>
+
+            </div><!-- /content -->
+        </div><!-- /main -->
+    </div><!-- /app -->
+
+    <script>
+        // ── Greeting ──────────────────────────────────────
+        (function () {
+            const now = new Date();
+            const hour = now.getHours();
+            const greet = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+            document.getElementById('greetTime').textContent = greet;
+            document.getElementById('greetMsg').textContent = greet + ', Admin 👋';
+
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            document.getElementById('liveDate').textContent =
+                `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        })();
+
+        // ── Page navigation ───────────────────────────────
+        const PAGE_META = {
+            dashboard: { title: 'Dashboard', sub: "Overview of today's activity" },
+            billing: { title: 'Billing', sub: 'Create and manage bills' },
+            delivery: { title: 'Delivery Orders', sub: 'Track and manage home deliveries' },
+            sales: { title: 'Sales Analysis', sub: 'Best-selling dishes & trends' },
+            revenue: { title: 'Revenue Analysis', sub: 'Daily, weekly & monthly revenue' },
+            menu: { title: 'Menu', sub: 'Manage dishes and prices' },
+            employees: { title: 'Employees', sub: 'Staff profiles and attendance' },
+            salaries: { title: 'Salaries', sub: 'Payroll and salary records' },
+            settings: { title: 'Settings', sub: 'Configure restaurant preferences' },
+        };
+
+        function navigate(btn, page) {
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const navBtn = document.querySelector(`[data-page="${page}"]`);
+            if (navBtn) navBtn.classList.add('active');
+
+            // Show page
+            document.querySelectorAll('[id^="page-"]').forEach(el => {
+                el.style.display = 'none';
+                el.classList.remove('active');
+            });
+            const target = document.getElementById('page-' + page);
+            if (target) {
+                if (page === 'dashboard') {
+                    target.style.display = 'block';
+                } else {
+                    target.style.display = 'flex';
+                    target.classList.add('active');
+                }
+            }
+
+            // Update topbar
+            const meta = PAGE_META[page] || {};
+            document.getElementById('topbarTitle').textContent = meta.title || page;
+            document.getElementById('topbarSub').textContent = meta.sub || '';
+        }
+
+        // Init — show dashboard
+        navigate(null, 'dashboard');
+
+        // ── Fetch Dashboard Stats ─────────────────────────
+        async function fetchDashboardStats() {
+            try {
+                const res = await fetch('/api/dashboard/stats');
+                if (res.ok) {
+                    const data = await res.json();
+                    
+                    // 1. Update Stat Cards
+                    const statValues = document.querySelectorAll('.stat-value');
+                    if (statValues.length >= 4) {
+                        statValues[0].innerHTML = `<small>₹</small>${data.revenue.toLocaleString('en-IN')}`;
+                        statValues[1].textContent = data.bills;
+                        statValues[2].textContent = data.deliveryCount;
+                        statValues[3].textContent = data.staffOnDuty;
+                    }
+
+                    // 2. Update Recent Orders Table
+                    const tbody = document.querySelector('.orders-table tbody');
+                    if (tbody) {
+                        tbody.innerHTML = '';
+                        data.recentOrders.forEach(o => {
+                            let typeHtml = o.type === 'dine-in' ? '<span class="order-type dine">🪑 Dine-in</span>' : '<span class="order-type del">🛵 Delivery</span>';
+                            let statusClass = o.status === 'paid' ? 'paid' : (o.status === 'pending' ? 'pending' : 'delivery');
+                            tbody.innerHTML += `
+                                <tr>
+                                    <td>${o.id}</td>
+                                    <td>${typeHtml}</td>
+                                    <td>${o.items}</td>
+                                    <td>₹${o.amount}</td>
+                                    <td><span class="status-badge ${statusClass}">${o.status}</span></td>
+                                </tr>
+                            `;
+                        });
+                    }
+
+                    // 3. Update Top Dishes
+                    const dishList = document.querySelector('.dish-list');
+                    if (dishList) {
+                        dishList.innerHTML = '';
+                        data.topDishes.forEach(d => {
+                            dishList.innerHTML += `
+                                <div class="dish-item">
+                                    <span class="dish-rank">#${d.rank}</span>
+                                    <span class="dish-name">${d.name}</span>
+                                    <span class="dish-count">${d.count}×</span>
+                                    <div class="dish-bar-wrap">
+                                        <div class="dish-bar" style="width:${d.percentage}%"></div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+
+                    // 4. Update Weekly Chart
+                    if (data.weeklyRevenue) {
+                        const days = data.weeklyRevenue.days;
+                        const vals = data.weeklyRevenue.values;
+                        const max = Math.max(...vals);
+                        const todayIdx = new Date().getDay() - 1; // Approx logic for highlight
+                        
+                        const wrap = document.getElementById('chartBars');
+                        wrap.innerHTML = '';
+                        days.forEach((d, i) => {
+                            const pct = Math.round((vals[i] / max) * 100);
+                            const col = document.createElement('div');
+                            col.className = 'chart-bar-col';
+                            col.innerHTML = `
+                                <div class="chart-bar${i === todayIdx ? ' highlight' : ''}"
+                                    style="height:${pct}px"
+                                    title="${d}: ₹${vals[i].toLocaleString('en-IN')}">
+                                </div>
+                                <span class="chart-day">${d}</span>`;
+                            wrap.appendChild(col);
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to load dashboard stats", err);
+            }
+        }
+        
+        fetchDashboardStats();
+    </script>
+
+</body>
+
+</html>

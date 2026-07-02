@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GP Home Foods — Employees</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green: #1B3A2D;
+            --green-lt: #264D3B;
+            --green-dk: #122A20;
+            --ivory: #F7F0E3;
+            --coconut: #EDE0C8;
+            --gold: #D4900A;
+            --gold-lt: #F2B733;
+            --clay: #3C1F0F;
+            --clay-lt: #6B3A20;
+            --teal: #0D9488;
+            --rose: #E11D48;
+            --blue: #3B82F6;
+            --amber: #F59E0B;
+            --sw: 240px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Lato', sans-serif;
+            background: #F0EBE0;
+            color: var(--clay);
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* ══ SIDEBAR ══════════════════════════════════════ */
+        .sidebar {
+            width: var(--sw);
+            background: var(--green-dk);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .sidebar-brand {
+            padding: 22px 20px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(212, 144, 10, 0.15);
+            border: 1px solid rgba(212, 144, 10, 0.35);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        .brand-text span {
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.8;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 14px 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .nav-sec {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(237, 224, 200, 0.35);
+            padding: 10px 10px 6px;
+            margin-top: 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 12px;
+            border-radius: 7px;
+            text-decoration: none;
+            position: relative;
+            border: none;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-item.active {
+            background: rgba(212, 144, 10, 0.14);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            bottom: 25%;
+            width: 3px;
+            background: var(--gold);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active .nav-icon {
+            background: rgba(212, 144, 10, 0.2);
+        }
+
+        .nav-label {
+            font-size: 0.85rem;
+            color: rgba(237, 224, 200, 0.65);
+            flex: 1;
+        }
+
+        .nav-item.active .nav-label {
+            color: var(--gold-lt);
+            font-weight: 700;
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-top: 4px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--green-lt);
+            border: 1.5px solid rgba(212, 144, 10, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--gold-lt);
+            font-weight: 700;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 0.78rem;
+            color: var(--coconut);
+            font-weight: 700;
+        }
+
+        .user-role {
+            font-size: 0.62rem;
+            color: var(--gold);
+            opacity: 0.7;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
+            padding: 4px;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.85;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        /* ══ MAIN ═════════════════════════════════════════ */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Topbar */
+        .topbar {
+            height: 64px;
+            background: var(--ivory);
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            flex-shrink: 0;
+        }
+
+        .topbar-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .topbar-left p {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.7;
+            margin-top: 1px;
+        }
+
+        .topbar-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* Tab bar */
+        .tab-bar {
+            background: var(--ivory);
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            padding: 0 28px;
+            gap: 0;
+            flex-shrink: 0;
+        }
+
+        .tab-btn {
+            padding: 13px 22px;
+            border: none;
+            background: transparent;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: color 0.15s, border-color 0.15s;
+            margin-bottom: -1px;
+        }
+
+        .tab-btn:hover {
+            color: var(--green);
+        }
+
+        .tab-btn.active {
+            color: var(--green);
+            border-bottom-color: var(--gold);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            border-radius: 6px;
+            border: none;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: background 0.14s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: var(--gold-lt);
+        }
+
+        .btn-primary:hover {
+            background: var(--green-lt);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--clay-lt);
+            border: 1.5px solid #DDD5C4;
+        }
+
+        .btn-ghost:hover {
+            background: var(--coconut);
+        }
+
+        .btn-danger {
+            background: rgba(225, 29, 72, 0.07);
+            color: var(--rose);
+            border: 1px solid rgba(225, 29, 72, 0.2);
+        }
+
+        .btn-danger:hover {
+            background: rgba(225, 29, 72, 0.13);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.7rem;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(27, 58, 45, 0.12);
+            border-radius: 3px;
+        }
+
+        /* ══ TAB PAGES ════════════════════════════════════ */
+        .tab-page {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tab-page.active {
+            display: flex;
+        }
+
+        /* ══ ATTENDANCE SUMMARY STRIP ═════════════════════ */
+        .att-summary {
+            background: var(--green);
+            border-radius: 12px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .att-date-block {
+            flex-shrink: 0;
+            margin-right: 28px;
+        }
+
+        .att-date-day {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            color: var(--ivory);
+            line-height: 1;
+            font-weight: 600;
+        }
+
+        .att-date-rest {
+            font-size: 0.72rem;
+            color: rgba(237, 224, 200, 0.55);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .att-divider {
+            width: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            height: 44px;
+            margin-right: 28px;
+            flex-shrink: 0;
+        }
+
+        .att-stats {
+            display: flex;
+            gap: 28px;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        .att-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .att-stat-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--ivory);
+            line-height: 1;
+        }
+
+        .att-stat-val.green {
+            color: #6EE7B7;
+        }
+
+        .att-stat-val.rose {
+            color: #FCA5A5;
+        }
+
+        .att-stat-val.amber {
+            color: #FDE68A;
+        }
+
+        .att-stat-lbl {
+            font-size: 0.62rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(237, 224, 200, 0.45);
+            font-weight: 700;
+        }
+
+        .att-mark-all {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-mark {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.07);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--ivory);
+            cursor: pointer;
+            letter-spacing: 0.06em;
+            transition: background 0.14s;
+        }
+
+        .btn-mark:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        /* ══ ATTENDANCE CARD GRID (signature) ════════════ */
+        .att-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .att-card {
+            background: var(--ivory);
+            border: 2px solid #DDD5C4;
+            border-radius: 12px;
+            padding: 18px 18px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.18s, box-shadow 0.18s;
+            position: relative;
+        }
+
+        .att-card.present {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.15);
+        }
+
+        .att-card.absent {
+            border-color: var(--rose);
+            box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.12);
+        }
+
+        .att-card.leave {
+            border-color: var(--amber);
+            box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.15);
+        }
+
+        .att-card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .emp-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: var(--gold-lt);
+            font-weight: 600;
+            flex-shrink: 0;
+            letter-spacing: 0.02em;
+        }
+
+        .emp-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .emp-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--green);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .emp-role {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .emp-phone {
+            font-size: 0.72rem;
+            color: var(--clay-lt);
+            opacity: 0.65;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 2px;
+        }
+
+        /* Status indicator dot on card */
+        .att-status-dot {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #DDD5C4;
+        }
+
+        .att-card.present .att-status-dot {
+            background: var(--teal);
+        }
+
+        .att-card.absent .att-status-dot {
+            background: var(--rose);
+        }
+
+        .att-card.leave .att-status-dot {
+            background: var(--amber);
+        }
+
+        /* Status toggle buttons */
+        .att-toggle {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .att-toggle-btn {
+            padding: 7px 4px;
+            border-radius: 6px;
+            border: 1.5px solid #DDD5C4;
+            background: transparent;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            color: var(--clay-lt);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            transition: all 0.12s;
+            text-transform: uppercase;
+        }
+
+        .att-toggle-btn .t-icon {
+            font-size: 1rem;
+        }
+
+        .att-toggle-btn:hover {
+            border-color: var(--green);
+        }
+
+        .att-toggle-btn.sel-present {
+            border-color: var(--teal);
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--teal);
+        }
+
+        .att-toggle-btn.sel-absent {
+            border-color: var(--rose);
+            background: rgba(225, 29, 72, 0.08);
+            color: var(--rose);
+        }
+
+        .att-toggle-btn.sel-leave {
+            border-color: var(--amber);
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--amber);
+        }
+
+        /* Monthly attendance mini-bar */
+        .att-month-bar {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .att-month-label {
+            font-size: 0.6rem;
+            color: var(--clay-lt);
+            opacity: 0.5;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-right: 4px;
+            flex-shrink: 0;
+        }
+
+        .att-pip {
+            width: 6px;
+            height: 6px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .pip-P {
+            background: var(--teal);
+        }
+
+        .pip-A {
+            background: var(--rose);
+        }
+
+        .pip-L {
+            background: var(--amber);
+        }
+
+        .pip-x {
+            background: rgba(221, 213, 196, 0.7);
+        }
+
+        .att-month-stat {
+            font-size: 0.68rem;
+            color: var(--clay-lt);
+            font-family: 'JetBrains Mono', monospace;
+            margin-left: auto;
+            flex-shrink: 0;
+            opacity: 0.65;
+        }
+
+        /* ══ EMPLOYEE DIRECTORY ═══════════════════════════ */
+        .emp-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 180px;
+            max-width: 300px;
+        }
+
+        .search-ico {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.38;
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+
+        .search-inp {
+            width: 100%;
+            padding: 9px 11px 9px 32px;
+            border: 1.5px solid #DDD5C4;
+            border-radius: 6px;
+            background: var(--ivory);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.85rem;
+            color: var(--clay);
+            outline: none;
+            transition: border-color 0.14s;
+        }
+
+        .search-inp:focus {
+            border-color: var(--green);
+        }
+
+        .role-filter {
+            padding: 9px 12px;
+            border: 1.5px solid #DDD5C4;
+            border-radius: 6px;
+            background: var(--ivory);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.82rem;
+            color: var(--clay);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .emp-count {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.55;
+            font-family: 'JetBrains Mono', monospace;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        /* Employee table */
+        .emp-table-wrap {
+            background: var(--ivory);
+            border: 1px solid #DDD5C4;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .emp-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .emp-table th {
+            font-size: 0.6rem;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            opacity: 0.6;
+            text-align: left;
+            padding: 10px 18px;
+            border-bottom: 1px solid #DDD5C4;
+            font-weight: 700;
+            background: rgba(237, 224, 200, 0.45);
+            white-space: nowrap;
+        }
+
+        .emp-table td {
+            padding: 13px 18px;
+            font-size: 0.83rem;
+            color: var(--clay);
+            border-bottom: 1px solid rgba(221, 213, 196, 0.45);
+            vertical-align: middle;
+        }
+
+        .emp-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .emp-table tr:hover td {
+            background: rgba(237, 224, 200, 0.3);
+        }
+
+        .emp-avatar-sm {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            color: var(--gold-lt);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .emp-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .role-Chef {
+            background: rgba(212, 144, 10, 0.12);
+            color: var(--gold);
+        }
+
+        .role-Cashier {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--blue);
+        }
+
+        .role-Waiter {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--teal);
+        }
+
+        .role-Delivery {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--amber);
+        }
+
+        .role-Manager {
+            background: rgba(27, 58, 45, 0.1);
+            color: var(--green);
+        }
+
+        .role-Cleaner {
+            background: rgba(107, 58, 32, 0.08);
+            color: var(--clay-lt);
+        }
+
+        .role-Helper {
+            background: rgba(107, 58, 32, 0.08);
+            color: var(--clay-lt);
+        }
+
+        .role-Other {
+            background: rgba(107, 58, 32, 0.08);
+            color: var(--clay-lt);
+        }
+
+        .join-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.76rem;
+            color: var(--clay-lt);
+            opacity: 0.65;
+        }
+
+        .phone-cell {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 6px;
+        }
+
+        .icon-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.13s;
+            background: transparent;
+        }
+
+        .icon-btn.edit:hover {
+            background: rgba(27, 58, 45, 0.08);
+        }
+
+        .icon-btn.del:hover {
+            background: rgba(225, 29, 72, 0.08);
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 56px 20px;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .empty-state .ei {
+            font-size: 3rem;
+            opacity: 0.2;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--green);
+        }
+
+        .empty-state p {
+            font-size: 0.83rem;
+            color: var(--clay-lt);
+            opacity: 0.6;
+            max-width: 280px;
+            line-height: 1.6;
+        }
+
+        /* ══ MODAL ════════════════════════════════════════ */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(18, 42, 32, 0.55);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--ivory);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.2s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        .modal-head {
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-head h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            opacity: 0.4;
+            transition: opacity 0.14s;
+            padding: 4px;
+        }
+
+        .modal-close:hover {
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--clay);
+        }
+
+        .field input,
+        .field select {
+            padding: 10px 12px;
+            border: 1.5px solid #DDD5C4;
+            border-radius: 6px;
+            background: #fff;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            color: var(--clay);
+            outline: none;
+            transition: border-color 0.14s;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--green);
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-foot {
+            padding: 16px 24px;
+            border-top: 1px solid #DDD5C4;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Confirm */
+        .confirm-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(18, 42, 32, 0.55);
+            z-index: 110;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .confirm-backdrop.open {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: var(--ivory);
+            border-radius: 10px;
+            padding: 26px 26px 20px;
+            max-width: 340px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .confirm-box .ci {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .confirm-box h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            color: var(--green);
+            margin-bottom: 7px;
+        }
+
+        .confirm-box p {
+            font-size: 0.82rem;
+            color: var(--clay-lt);
+            opacity: 0.72;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(60px);
+            background: var(--green);
+            color: var(--ivory);
+            padding: 11px 22px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: transform 0.22s, opacity 0.22s;
+            z-index: 300;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ══ RESPONSIVE ════════════════════════════════════ */
+        @media (max-width: 700px) {
+            :root {
+                --sw: 0px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .att-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        <!-- ══ SIDEBAR ══════════════════════════════════════ -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <a class="brand-logo" href="dashboard.html">
+                    <div class="brand-icon">🌿</div>
+                    <div class="brand-text"><strong>GP Home Foods</strong><span>Staff Portal</span></div>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <span class="nav-sec">Main</span>
+                <a class="nav-item" href="dashboard.html">
+                    <div class="nav-icon">🏠</div><span class="nav-label">Dashboard</span>
+                </a>
+                <span class="nav-sec">Operations</span>
+                <a class="nav-item" href="billing.html">
+                    <div class="nav-icon">🧾</div><span class="nav-label">Billing</span>
+                </a>
+                <a class="nav-item" href="delivery.html">
+                    <div class="nav-icon">🛵</div><span class="nav-label">Delivery Orders</span>
+                </a>
+                <span class="nav-sec">Analytics</span>
+                <a class="nav-item" href="sales.html">
+                    <div class="nav-icon">📊</div><span class="nav-label">Sales Analysis</span>
+                </a>
+                <a class="nav-item" href="revenue.html">
+                    <div class="nav-icon">💰</div><span class="nav-label">Revenue Analysis</span>
+                </a>
+                <span class="nav-sec">Restaurant</span>
+                <a class="nav-item" href="menu.html">
+                    <div class="nav-icon">🍽️</div><span class="nav-label">Menu</span>
+                </a>
+                <a class="nav-item active" href="employees.html">
+                    <div class="nav-icon">👥</div><span class="nav-label">Employees</span>
+                </a>
+                <a class="nav-item" href="salary.html">
+                    <div class="nav-icon">💼</div><span class="nav-label">Salaries</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a class="nav-item" href="settings.html">
+                    <div class="nav-icon">⚙️</div><span class="nav-label"
+                        style="color:rgba(237,224,200,0.5)">Settings</span>
+                </a>
+                <div class="user-card">
+                    <div class="user-avatar">GP</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Manager</div>
+                    </div>
+                    <button class="logout-btn" onclick="location.href='login.html'">⏻</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ══ MAIN ══════════════════════════════════════════ -->
+        <div class="main">
+
+            <!-- Topbar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h1>Employees</h1>
+                    <p id="topSub">Manage staff and take attendance</p>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-primary" onclick="openModal()">＋ Add Employee</button>
+                </div>
+            </div>
+
+            <!-- Tab bar -->
+            <div class="tab-bar">
+                <button class="tab-btn active" onclick="switchTab('attendance',this)">📋 Today's Attendance</button>
+                <button class="tab-btn" onclick="switchTab('directory',this)">👥 Employee Directory</button>
+                <button class="tab-btn" onclick="switchTab('history',this)">📅 Attendance History</button>
+            </div>
+
+            <div class="content">
+
+                <!-- ══ TAB 1: ATTENDANCE ══════════════════════════ -->
+                <div class="tab-page active" id="tab-attendance">
+
+                    <!-- Summary strip -->
+                    <div class="att-summary" id="attSummary"></div>
+
+                    <!-- Card grid -->
+                    <div class="att-grid" id="attGrid"></div>
+
+                </div>
+
+                <!-- ══ TAB 2: DIRECTORY ═══════════════════════════ -->
+                <div class="tab-page" id="tab-directory">
+                    <div class="emp-toolbar">
+                        <div class="search-wrap">
+                            <span class="search-ico">🔍</span>
+                            <input class="search-inp" id="dirSearch" type="text" placeholder="Search by name or role…"
+                                oninput="renderDirectory()" />
+                        </div>
+                        <select class="role-filter" id="roleFilter" onchange="renderDirectory()">
+                            <option value="">All Roles</option>
+                            <option>Chef</option>
+                            <option>Cashier</option>
+                            <option>Waiter</option>
+                            <option>Delivery</option>
+                            <option>Manager</option>
+                            <option>Cleaner</option>
+                            <option>Helper</option>
+                            <option>Other</option>
+                        </select>
+                        <span class="emp-count" id="dirCount"></span>
+                    </div>
+                    <div class="emp-table-wrap" id="empTableWrap"></div>
+                </div>
+
+                <!-- ══ TAB 3: HISTORY ═════════════════════════════ -->
+                <div class="tab-page" id="tab-history">
+                    <div class="emp-toolbar">
+                        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                            <label
+                                style="font-size:0.75rem;font-weight:700;color:var(--clay-lt);letter-spacing:0.1em;text-transform:uppercase">Month</label>
+                            <input type="month" id="histMonth"
+                                style="padding:8px 12px;border:1.5px solid #DDD5C4;border-radius:6px;background:var(--ivory);font-family:'Lato',sans-serif;font-size:0.85rem;color:var(--clay);outline:none;"
+                                onchange="renderHistory()" />
+                        </div>
+                        <select class="role-filter" id="histEmpFilter" onchange="renderHistory()"
+                            style="max-width:200px">
+                            <option value="">All Employees</option>
+                        </select>
+                    </div>
+                    <div id="historyWrap"></div>
+                </div>
+
+            </div><!-- /content -->
+        </div>
+    </div>
+
+    <!-- ══ ADD / EDIT MODAL ══════════════════════════════ -->
+    <div class="modal-backdrop" id="modalBackdrop" onclick="bdClose(event)">
+        <div class="modal">
+            <div class="modal-head">
+                <h3 id="modalTitle">Add Employee</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="field">
+                    <label>Full Name *</label>
+                    <input type="text" id="fName" placeholder="e.g. Murugan K" />
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Role *</label>
+                        <select id="fRole">
+                            <option value="">— Select —</option>
+                            <option>Chef</option>
+                            <option>Cashier</option>
+                            <option>Waiter</option>
+                            <option>Delivery</option>
+                            <option>Manager</option>
+                            <option>Cleaner</option>
+                            <option>Helper</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="fPhone" placeholder="9876543210" maxlength="10" />
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Joining Date</label>
+                        <input type="date" id="fJoin" />
+                    </div>
+                    <div class="field">
+                        <label>Monthly Salary (₹)</label>
+                        <input type="number" id="fSalary" placeholder="0" min="0" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Address <span style="opacity:.5;font-weight:400">(optional)</span></label>
+                    <input type="text" id="fAddress" placeholder="Area / Street" />
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEmployee()">Save Employee</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ DELETE CONFIRM ════════════════════════════════ -->
+    <div class="confirm-backdrop" id="confirmBackdrop">
+        <div class="confirm-box">
+            <div class="ci">⚠️</div>
+            <h4>Remove this employee?</h4>
+            <p>Their profile and attendance history will be permanently deleted.</p>
+            <div class="confirm-actions">
+                <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ══ STORAGE KEYS ══════════════════════════════════════
+        const EMP_KEY = 'gp_employees';
+        const ATT_KEY = 'gp_attendance'; // { "YYYY-MM-DD": { empId: "P"|"A"|"L" } }
+
+        // ══ STATE ═════════════════════════════════════════════
+        let employees = [];
+        let attendance = {};
+        let editId = null;
+        let deleteId = null;
+        let activeTab = 'attendance';
+
+        const ROLES = ['Chef', 'Cashier', 'Waiter', 'Delivery', 'Manager', 'Cleaner', 'Helper', 'Other'];
+        const STATUS_LABEL = { P: 'Present', A: 'Absent', L: 'Leave' };
+        const STATUS_ICON = { P: '✅', A: '❌', L: '🏖️' };
+
+        // ══ INIT ══════════════════════════════════════════════
+        async function load() {
+            try {
+                const [empRes, attRes] = await Promise.all([
+                    fetch('/api/employees'),
+                    fetch('/api/employees/attendance/all')
+                ]);
+                employees = await empRes.json();
+                attendance = await attRes.json();
+            } catch(e) {
+                console.error('Error loading data', e);
+            }
+        }
+        function saveEmp() { /* Now handled server-side */ }
+        function saveAtt() { /* Now handled server-side */ }
+        function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+        function todayKey() { const n = new Date(); return `${n.getFullYear()}-${pad(n.getMonth() + 1)}-${pad(n.getDate())}`; }
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function initials(name) { return name.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase(); }
+        function fmt(n) { return Number(n || 0).toLocaleString('en-IN'); }
+        function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        // ══ TAB ═══════════════════════════════════════════════
+        function switchTab(tab, btn) {
+            activeTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            if (tab === 'attendance') renderAttendance();
+            if (tab === 'directory') renderDirectory();
+            if (tab === 'history') renderHistory();
+        }
+
+        // ══ ATTENDANCE ════════════════════════════════════════
+        function renderAttendance() {
+            const today = todayKey();
+            const todayAtt = attendance[today] || {};
+
+            // Summary
+            let present = 0, absent = 0, leave = 0, unmarked = 0;
+            employees.forEach(e => {
+                const s = todayAtt[e.id];
+                if (!s) unmarked++;
+                else if (s === 'P') present++;
+                else if (s === 'A') absent++;
+                else if (s === 'L') leave++;
+            });
+
+            const now = new Date();
+            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            const sumEl = document.getElementById('attSummary');
+            sumEl.innerHTML = `
+    <div class="att-date-block">
+      <div class="att-date-day">${pad(now.getDate())}</div>
+      <div class="att-date-rest">${dayNames[now.getDay()]} · ${months[now.getMonth()]} ${now.getFullYear()}</div>
+    </div>
+    <div class="att-divider"></div>
+    <div class="att-stats">
+      <div class="att-stat"><div class="att-stat-val green">${present}</div><div class="att-stat-lbl">Present</div></div>
+      <div class="att-stat"><div class="att-stat-val rose">${absent}</div><div class="att-stat-lbl">Absent</div></div>
+      <div class="att-stat"><div class="att-stat-val amber">${leave}</div><div class="att-stat-lbl">On Leave</div></div>
+      <div class="att-stat"><div class="att-stat-val" style="color:rgba(237,224,200,0.4)">${unmarked}</div><div class="att-stat-lbl">Unmarked</div></div>
+      <div class="att-stat"><div class="att-stat-val" style="color:var(--ivory)">${employees.length}</div><div class="att-stat-lbl">Total Staff</div></div>
+    </div>
+    <div class="att-mark-all">
+      <button class="btn-mark" onclick="markAll('P')">✅ All Present</button>
+      <button class="btn-mark" onclick="markAll('A')">❌ All Absent</button>
+    </div>`;
+
+            // Cards
+            const grid = document.getElementById('attGrid');
+            grid.innerHTML = '';
+
+            if (employees.length === 0) {
+                grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="ei">👥</div><h3>No employees added</h3>
+      <p>Click "+ Add Employee" to add your first staff member.</p></div>`;
+                return;
+            }
+
+            employees.forEach(e => {
+                const status = todayAtt[e.id] || null;
+                const card = document.createElement('div');
+                card.className = 'att-card' + (status ? ' ' + statusClass(status) : '');
+
+                // Month pips (last 30 days)
+                const pips = buildMonthPips(e.id);
+
+                card.innerHTML = `
+      <div class="att-status-dot"></div>
+      <div class="att-card-top">
+        <div class="emp-avatar">${initials(e.name)}</div>
+        <div class="emp-info">
+          <div class="emp-name">${esc(e.name)}</div>
+          <div class="emp-role">${esc(e.role)}</div>
+          <div class="emp-phone">${esc(e.phone)}</div>
+        </div>
+      </div>
+      <div class="att-toggle">
+        <button class="att-toggle-btn ${status === 'P' ? 'sel-present' : ''}" onclick="markAttendance('${e.id}','P')">
+          <span class="t-icon">✅</span>Present
+        </button>
+        <button class="att-toggle-btn ${status === 'A' ? 'sel-absent' : ''}"  onclick="markAttendance('${e.id}','A')">
+          <span class="t-icon">❌</span>Absent
+        </button>
+        <button class="att-toggle-btn ${status === 'L' ? 'sel-leave' : ''}"   onclick="markAttendance('${e.id}','L')">
+          <span class="t-icon">🏖️</span>Leave
+        </button>
+      </div>
+      <div class="att-month-bar">
+        <span class="att-month-label">30d</span>
+        ${pips.html}
+        <span class="att-month-stat">${pips.presentCount}P · ${pips.absentCount}A · ${pips.leaveCount}L</span>
+      </div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        function statusClass(s) { return { P: 'present', A: 'absent', L: 'leave' }[s] || ''; }
+
+        function buildMonthPips(empId) {
+            let html = '', presentCount = 0, absentCount = 0, leaveCount = 0;
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date(); d.setDate(d.getDate() - i);
+                const k = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+                const s = (attendance[k] || {})[empId];
+                if (s === 'P') { html += `<div class="att-pip pip-P" title="${k}: Present"></div>`; presentCount++; }
+                else if (s === 'A') { html += `<div class="att-pip pip-A" title="${k}: Absent"></div>`; absentCount++; }
+                else if (s === 'L') { html += `<div class="att-pip pip-L" title="${k}: Leave"></div>`; leaveCount++; }
+                else { html += `<div class="att-pip pip-x" title="${k}: —"></div>`; }
+            }
+            return { html, presentCount, absentCount, leaveCount };
+        }
+
+        function markAttendance(empId, status) {
+            const today = todayKey();
+            if (!attendance[today]) attendance[today] = {};
+            // Toggle off if same status clicked
+            if (attendance[today][empId] === status) {
+                delete attendance[today][empId];
+            } else {
+                attendance[today][empId] = status;
+            }
+            saveAtt();
+            renderAttendance();
+            showToast(`Marked ${STATUS_ICON[status]} ${status === 'P' ? 'Present' : status === 'A' ? 'Absent' : 'On Leave'}`);
+        }
+
+        function markAll(status) {
+            const today = todayKey();
+            if (!attendance[today]) attendance[today] = {};
+            employees.forEach(e => attendance[today][e.id] = status);
+            saveAtt();
+            renderAttendance();
+            showToast(`All staff marked ${STATUS_LABEL[status]}`);
+        }
+
+        // ══ DIRECTORY ═════════════════════════════════════════
+        function renderDirectory() {
+            const search = (document.getElementById('dirSearch')?.value || '').toLowerCase();
+            const role = document.getElementById('roleFilter')?.value || '';
+            const filtered = employees.filter(e => {
+                const matchQ = e.name.toLowerCase().includes(search) || e.role.toLowerCase().includes(search) || e.phone.includes(search);
+                const matchR = !role || e.role === role;
+                return matchQ && matchR;
+            });
+            document.getElementById('dirCount').textContent = filtered.length + ' employee' + (filtered.length !== 1 ? 's' : '');
+
+            const wrap = document.getElementById('empTableWrap');
+            if (employees.length === 0) {
+                wrap.innerHTML = `<div class="empty-state"><div class="ei">👥</div><h3>No employees yet</h3><p>Click "+ Add Employee" to add your first staff member.</p></div>`;
+                return;
+            }
+            if (filtered.length === 0) {
+                wrap.innerHTML = `<div class="empty-state"><div class="ei">🔍</div><h3>No matches</h3><p>Try a different name, role, or phone number.</p></div>`;
+                return;
+            }
+
+            // Monthly attendance count for this month
+            const now = new Date();
+            const monthDays = [];
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            for (let d = 1; d <= now.getDate(); d++) {
+                monthDays.push(`${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(d)}`);
+            }
+
+            let rows = '';
+            filtered.forEach(e => {
+                let monthPresent = 0;
+                monthDays.forEach(dk => { if ((attendance[dk] || {})[e.id] === 'P') monthPresent++; });
+                const joinStr = e.joinDate ? new Date(e.joinDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+                const roleCls = 'role-' + (e.role || 'Other').replace(/\s+/g, '');
+                rows += `<tr>
+      <td><div class="emp-name-cell">
+        <div class="emp-avatar-sm">${initials(e.name)}</div>
+        <div>
+          <div style="font-weight:700;color:var(--green)">${esc(e.name)}</div>
+          ${e.address ? `<div style="font-size:0.7rem;color:var(--clay-lt);opacity:.6">${esc(e.address)}</div>` : ''}
+        </div>
+      </div></td>
+      <td><span class="role-badge ${roleCls}">${esc(e.role)}</span></td>
+      <td class="phone-cell">${esc(e.phone)}</td>
+      <td class="join-date">${joinStr}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:0.8rem">${e.salary ? '₹' + fmt(e.salary) : ' —'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--teal)">${monthPresent}/${monthDays.length}</td>
+      <td><div class="actions-cell">
+        <button class="icon-btn edit" title="Edit" onclick="openModal('${e.id}')">✏️</button>
+        <button class="icon-btn del"  title="Remove" onclick="askDelete('${e.id}')">🗑️</button>
+      </div></td>
+    </tr>`;
+            });
+
+            wrap.innerHTML = `<table class="emp-table">
+    <thead><tr>
+      <th>Employee</th><th>Role</th><th>Phone</th><th>Joined</th><th>Salary</th><th>This Month</th><th>Actions</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+        }
+
+        // ══ HISTORY ═══════════════════════════════════════════
+        function renderHistory() {
+            // Populate employee filter
+            const ef = document.getElementById('histEmpFilter');
+            const selEmpId = ef.value;
+            ef.innerHTML = '<option value="">All Employees</option>';
+            employees.forEach(e => {
+                const opt = document.createElement('option');
+                opt.value = e.id; opt.textContent = e.name;
+                if (e.id === selEmpId) opt.selected = true;
+                ef.appendChild(opt);
+            });
+
+            const mi = document.getElementById('histMonth');
+            if (!mi.value) {
+                const n = new Date();
+                mi.value = `${n.getFullYear()}-${pad(n.getMonth() + 1)}`;
+            }
+            const [yr, mo] = mi.value.split('-').map(Number);
+            const daysInMonth = new Date(yr, mo, 0).getDate();
+            const filterEmpId = ef.value;
+
+            const wrap = document.getElementById('historyWrap');
+
+            if (employees.length === 0) {
+                wrap.innerHTML = `<div class="empty-state"><div class="ei">📅</div><h3>No employees</h3><p>Add employees first to view attendance history.</p></div>`;
+                return;
+            }
+
+            const filtered = filterEmpId ? employees.filter(e => e.id === filterEmpId) : employees;
+
+            // Build day keys for month
+            const dayKeys = [];
+            for (let d = 1; d <= daysInMonth; d++) dayKeys.push(`${yr}-${pad(mo)}-${pad(d)}`);
+
+            // Day headers (abbreviated)
+            const dayNamesShort = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+            let html = `<div style="background:var(--ivory);border:1px solid #DDD5C4;border-radius:10px;overflow:hidden">
+    <div style="padding:14px 20px;border-bottom:1px solid #DDD5C4;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--green)">
+        Attendance · ${new Date(yr, mo - 1, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+      </span>
+      <span style="font-size:0.7rem;color:var(--clay-lt);opacity:.55;font-family:'JetBrains Mono',monospace">${filtered.length} employee${filtered.length !== 1 ? 's' : ''}</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;min-width:${200 + daysInMonth * 28}px">
+      <thead>
+        <tr style="background:rgba(237,224,200,0.45)">
+          <th style="text-align:left;padding:8px 16px;font-size:0.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--clay-lt);opacity:.6;font-weight:700;width:150px;border-bottom:1px solid #DDD5C4">Employee</th>`;
+
+            dayKeys.forEach(dk => {
+                const d = new Date(dk + 'T12:00:00');
+                const dow = dayNamesShort[d.getDay()];
+                const isToday = dk === todayKey();
+                const isSun = d.getDay() === 0;
+                html += `<th style="padding:5px 2px;font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:${isToday ? 'var(--gold)' : isSun ? 'var(--rose)' : 'var(--clay-lt)'};opacity:${isToday ? 1 : .6};text-align:center;border-bottom:1px solid #DDD5C4;min-width:28px;font-weight:700">
+      <div>${pad(d.getDate())}</div><div style="opacity:.7">${dow}</div>
+    </th>`;
+            });
+
+            html += `<th style="text-align:center;padding:8px 12px;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--clay-lt);opacity:.6;font-weight:700;border-bottom:1px solid #DDD5C4;border-left:1px solid #DDD5C4">P</th>
+           <th style="text-align:center;padding:8px 12px;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--clay-lt);opacity:.6;font-weight:700;border-bottom:1px solid #DDD5C4">A</th>
+           <th style="text-align:center;padding:8px 12px;font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--clay-lt);opacity:.6;font-weight:700;border-bottom:1px solid #DDD5C4">L</th>
+        </tr>
+      </thead><tbody>`;
+
+            filtered.forEach((e, ei) => {
+                let present = 0, absent = 0, leave = 0;
+                html += `<tr style="${ei % 2 === 1 ? 'background:rgba(237,224,200,0.18)' : ''}">
+      <td style="padding:8px 16px;border-bottom:1px solid rgba(221,213,196,.35)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:26px;height:26px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:0.62rem;color:var(--gold-lt);font-weight:700;flex-shrink:0">${initials(e.name)}</div>
+          <div>
+            <div style="font-size:0.8rem;font-weight:700;color:var(--green);white-space:nowrap">${esc(e.name)}</div>
+            <div style="font-size:0.62rem;color:var(--gold);font-weight:700;letter-spacing:.06em;text-transform:uppercase">${esc(e.role)}</div>
+          </div>
+        </div>
+      </td>`;
+
+                dayKeys.forEach(dk => {
+                    const s = (attendance[dk] || {})[e.id];
+                    const isFuture = dk > todayKey();
+                    const isSun = new Date(dk + 'T12:00:00').getDay() === 0;
+                    let cell = '·';
+                    let bg = isSun ? 'rgba(225,29,72,0.04)' : 'transparent';
+                    let color = 'rgba(60,31,15,0.2)';
+                    if (!isFuture) {
+                        if (s === 'P') { cell = 'P'; color = 'var(--teal)'; bg = 'rgba(13,148,136,0.08)'; present++; }
+                        else if (s === 'A') { cell = 'A'; color = 'var(--rose)'; bg = 'rgba(225,29,72,0.07)'; absent++; }
+                        else if (s === 'L') { cell = 'L'; color = 'var(--amber)'; bg = 'rgba(245,158,11,0.1)'; leave++; }
+                    } else { cell = ''; bg = 'rgba(0,0,0,0.02)'; }
+                    html += `<td style="text-align:center;padding:6px 2px;border-bottom:1px solid rgba(221,213,196,.35);background:${bg}">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:700;color:${color}">${cell}</span>
+      </td>`;
+                });
+
+                html += `<td style="text-align:center;padding:8px 12px;border-bottom:1px solid rgba(221,213,196,.35);border-left:1px solid #DDD5C4;font-family:'JetBrains Mono',monospace;font-size:0.78rem;font-weight:700;color:var(--teal)">${present}</td>
+             <td style="text-align:center;padding:8px 12px;border-bottom:1px solid rgba(221,213,196,.35);font-family:'JetBrains Mono',monospace;font-size:0.78rem;font-weight:700;color:var(--rose)">${absent}</td>
+             <td style="text-align:center;padding:8px 12px;border-bottom:1px solid rgba(221,213,196,.35);font-family:'JetBrains Mono',monospace;font-size:0.78rem;font-weight:700;color:var(--amber)">${leave}</td>
+           </tr>`;
+            });
+
+            html += '</tbody></table></div></div>';
+            wrap.innerHTML = html;
+        }
+
+        // ══ MODAL ═════════════════════════════════════════════
+        function openModal(id = null) {
+            editId = id;
+            document.getElementById('modalTitle').textContent = id ? 'Edit Employee' : 'Add Employee';
+            if (id) {
+                const e = employees.find(x => x.id === id);
+                document.getElementById('fName').value = e.name;
+                document.getElementById('fRole').value = e.role;
+                document.getElementById('fPhone').value = e.phone;
+                document.getElementById('fJoin').value = e.joinDate || '';
+                document.getElementById('fSalary').value = e.salary || '';
+                document.getElementById('fAddress').value = e.address || '';
+            } else {
+                ['fName', 'fPhone', 'fJoin', 'fSalary', 'fAddress'].forEach(id => document.getElementById(id).value = '');
+                document.getElementById('fRole').value = '';
+            }
+            document.getElementById('modalBackdrop').classList.add('open');
+            setTimeout(() => document.getElementById('fName').focus(), 80);
+        }
+
+        function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); editId = null; }
+        function bdClose(e) { if (e.target === document.getElementById('modalBackdrop')) closeModal(); }
+
+        async function saveEmployee() {
+            const name = document.getElementById('fName').value.trim();
+            const role = document.getElementById('fRole').value;
+            const phone = document.getElementById('fPhone').value.trim();
+            const joinDate = document.getElementById('fJoin').value;
+            const salary = parseFloat(document.getElementById('fSalary').value) || 0;
+            const address = document.getElementById('fAddress').value.trim();
+
+            if (!name) { flash('fName', 'Enter a name'); return; }
+            if (!role) { flash('fRole', 'Select a role'); return; }
+            if (!phone) { flash('fPhone', 'Enter a phone'); return; }
+
+            const payload = { name, role, phone, joinDate, salary, address };
+
+            try {
+                if (editId) {
+                    await fetch('/api/employees/' + editId, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    showToast('Employee updated');
+                } else {
+                    await fetch('/api/employees', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    showToast('Employee added');
+                }
+                closeModal();
+                await load();
+                refreshAll();
+            } catch(e) {
+                console.error(e);
+                showToast('Failed to save');
+            }
+        }
+
+        function flash(id, msg) {
+            const el = document.getElementById(id);
+            const old = el.placeholder;
+            el.placeholder = msg;
+            el.style.borderColor = 'var(--rose)';
+            setTimeout(() => { el.placeholder = old; el.style.borderColor = ''; }, 2000);
+        }
+
+        // ══ DELETE ════════════════════════════════════════════
+        function askDelete(id) { deleteId = id; document.getElementById('confirmBackdrop').classList.add('open'); }
+        function closeConfirm() { document.getElementById('confirmBackdrop').classList.remove('open'); deleteId = null; }
+        
+        async function confirmDelete() {
+            if (deleteId) {
+                try {
+                    await fetch('/api/employees/' + deleteId, { method: 'DELETE' });
+                    showToast('Employee removed');
+                    closeConfirm();
+                    await load();
+                    refreshAll();
+                } catch(e) {
+                    console.error(e);
+                    showToast('Failed to delete');
+                }
+            }
+        }
+
+        // ══ ATTENDANCE ACTIONS ════════════════════════════════
+        async function markAttendance(empId, status) {
+            const date = todayKey();
+            try {
+                await fetch('/api/employees/attendance/mark', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date, empId, status })
+                });
+                if (!attendance[date]) attendance[date] = {};
+                attendance[date][empId] = status;
+                renderAttendance();
+                showToast(STATUS_LABEL[status] + ' marked');
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        async function markAll(status) {
+            const date = todayKey();
+            const employeeIds = employees.map(e => e.id);
+            try {
+                await fetch('/api/employees/attendance/mark-all', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date, status, employeeIds })
+                });
+                if (!attendance[date]) attendance[date] = {};
+                employees.forEach(e => attendance[date][e.id] = status);
+                renderAttendance();
+                showToast('All marked ' + STATUS_LABEL[status]);
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        // ══ REFRESH ═══════════════════════════════════════════
+        function refreshAll() {
+            if (activeTab === 'attendance') renderAttendance();
+            if (activeTab === 'directory') renderDirectory();
+            if (activeTab === 'history') renderHistory();
+        }
+
+        // ══ TOAST ═════════════════════════════════════════════
+        let toastT;
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(toastT);
+            toastT = setTimeout(() => el.classList.remove('show'), 2400);
+        }
+
+        // ══ KEYBOARD ══════════════════════════════════════════
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { closeModal(); closeConfirm(); }
+        });
+
+        // ══ BOOT ══════════════════════════════════════════════
+        (async function boot() {
+            await load();
+            renderAttendance();
+            // Set history month default
+            const now2 = new Date();
+            document.getElementById('histMonth').value = `${now2.getFullYear()}-${pad(now2.getMonth() + 1)}`;
+        })();
+    </script>
+</body>
+
+</html>
