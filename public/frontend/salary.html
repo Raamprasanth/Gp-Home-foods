@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GP Home Foods — Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green: #1B3A2D;
+            --green-lt: #264D3B;
+            --green-dk: #122A20;
+            --green-hover: #1F4433;
+            --ivory: #F7F0E3;
+            --coconut: #EDE0C8;
+            --gold: #D4900A;
+            --gold-lt: #F2B733;
+            --clay: #3C1F0F;
+            --clay-lt: #6B3A20;
+            --sidebar-w: 240px;
+            --topbar-h: 64px;
+
+            --blue: #3B82F6;
+            --teal: #0D9488;
+            --rose: #E11D48;
+            --purple: #7C3AED;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Lato', sans-serif;
+            background: #F0EBE0;
+            color: var(--clay);
+        }
+
+        /* ══════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════ */
+        .app {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ══════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════ */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--green-dk);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Brand */
+        .sidebar-brand {
+            padding: 24px 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(212, 144, 10, 0.15);
+            border: 1px solid rgba(212, 144, 10, 0.35);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            line-height: 1.15;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        .brand-text span {
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.8;
+        }
+
+        /* Nav */
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .nav-section-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(237, 224, 200, 0.35);
+            padding: 10px 10px 6px;
+            margin-top: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: background 0.15s;
+            text-decoration: none;
+            position: relative;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-item.active {
+            background: rgba(212, 144, 10, 0.14);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            bottom: 25%;
+            width: 3px;
+            background: var(--gold);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active .nav-icon {
+            background: rgba(212, 144, 10, 0.2);
+        }
+
+        .nav-label {
+            font-size: 0.85rem;
+            color: rgba(237, 224, 200, 0.65);
+            font-weight: 400;
+            flex: 1;
+        }
+
+        .nav-item.active .nav-label {
+            color: var(--gold-lt);
+            font-weight: 700;
+        }
+
+        .nav-badge {
+            font-size: 0.6rem;
+            background: var(--gold);
+            color: var(--green-dk);
+            border-radius: 10px;
+            padding: 2px 7px;
+            font-weight: 700;
+        }
+
+        /* Sidebar footer */
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-item.settings .nav-label {
+            color: rgba(237, 224, 200, 0.5);
+        }
+
+        .nav-item.settings:hover .nav-label {
+            color: rgba(237, 224, 200, 0.8);
+        }
+
+        /* User card */
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-top: 4px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--green-lt);
+            border: 1.5px solid rgba(212, 144, 10, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--gold-lt);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 0.78rem;
+            color: var(--coconut);
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            font-size: 0.62rem;
+            color: var(--gold);
+            opacity: 0.7;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
+            transition: opacity 0.15s;
+            padding: 4px;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ══════════════════════════════════════
+       MAIN AREA
+    ══════════════════════════════════════ */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top bar */
+        .topbar {
+            height: var(--topbar-h);
+            background: var(--ivory);
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            flex-shrink: 0;
+        }
+
+        .topbar-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .topbar-left p {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.7;
+            margin-top: 1px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .topbar-date {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.6;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .notif-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.15rem;
+            padding: 6px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .notif-btn:hover {
+            background: var(--coconut);
+        }
+
+        .notif-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 7px;
+            height: 7px;
+            background: var(--rose);
+            border-radius: 50%;
+            border: 1.5px solid var(--ivory);
+        }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px;
+        }
+
+        /* ══════════════════════════════════════
+       DASHBOARD PAGE
+    ══════════════════════════════════════ */
+        .greeting {
+            margin-bottom: 28px;
+        }
+
+        .greeting-time {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .greeting h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: var(--green);
+            line-height: 1.2;
+        }
+
+        .greeting p {
+            font-size: 0.85rem;
+            color: var(--clay-lt);
+            margin-top: 5px;
+            opacity: 0.75;
+        }
+
+        /* Stat cards */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--ivory);
+            border-radius: 10px;
+            padding: 20px 20px 18px;
+            border: 1px solid #DDD5C4;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .stat-card.c-gold::after {
+            background: var(--gold);
+        }
+
+        .stat-card.c-teal::after {
+            background: var(--teal);
+        }
+
+        .stat-card.c-blue::after {
+            background: var(--blue);
+        }
+
+        .stat-card.c-rose::after {
+            background: var(--rose);
+        }
+
+        .stat-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            opacity: 0.7;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.7rem;
+            font-weight: 400;
+            color: var(--green);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-value small {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.up {
+            color: var(--teal);
+        }
+
+        .stat-change.down {
+            color: var(--rose);
+        }
+
+        .stat-icon-bg {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            font-size: 1.6rem;
+            opacity: 0.1;
+        }
+
+        /* Two-col row */
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Panel card */
+        .panel {
+            background: var(--ivory);
+            border-radius: 10px;
+            border: 1px solid #DDD5C4;
+            overflow: hidden;
+        }
+
+        .panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #DDD5C4;
+        }
+
+        .panel-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--green);
+        }
+
+        .panel-action {
+            font-size: 0.72rem;
+            color: var(--gold);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .panel-action:hover {
+            text-decoration: underline;
+        }
+
+        /* Recent orders table */
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            font-size: 0.62rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            opacity: 0.6;
+            text-align: left;
+            padding: 10px 20px;
+            border-bottom: 1px solid #DDD5C4;
+            font-weight: 700;
+        }
+
+        .orders-table td {
+            padding: 11px 20px;
+            font-size: 0.83rem;
+            color: var(--clay);
+            border-bottom: 1px solid rgba(221, 213, 196, 0.4);
+        }
+
+        .orders-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .orders-table tr:hover td {
+            background: rgba(237, 224, 200, 0.3);
+        }
+
+        .order-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.06em;
+        }
+
+        .order-type.dine {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--teal);
+        }
+
+        .order-type.del {
+            background: rgba(212, 144, 10, 0.12);
+            color: var(--gold);
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .status-badge.paid {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--teal);
+        }
+
+        .status-badge.pending {
+            background: rgba(212, 144, 10, 0.1);
+            color: var(--gold);
+        }
+
+        .status-badge.delivery {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--blue);
+        }
+
+        /* Top dishes */
+        .dish-list {
+            padding: 4px 0;
+        }
+
+        .dish-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 20px;
+            border-bottom: 1px solid rgba(221, 213, 196, 0.4);
+        }
+
+        .dish-item:last-child {
+            border-bottom: none;
+        }
+
+        .dish-rank {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold);
+            font-weight: 400;
+            width: 18px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .dish-name {
+            flex: 1;
+            font-size: 0.83rem;
+            color: var(--clay);
+        }
+
+        .dish-count {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.65;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .dish-bar-wrap {
+            width: 60px;
+            height: 4px;
+            background: rgba(212, 144, 10, 0.12);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .dish-bar {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+
+        /* Quick actions */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .quick-btn {
+            background: var(--ivory);
+            border: 1px solid #DDD5C4;
+            border-radius: 10px;
+            padding: 18px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .quick-btn:hover {
+            border-color: var(--gold);
+            box-shadow: 0 2px 12px rgba(212, 144, 10, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .quick-btn .q-icon {
+            font-size: 1.5rem;
+        }
+
+        .quick-btn .q-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            text-align: center;
+        }
+
+        /* ══════════════════════════════════════
+       PLACEHOLDER PAGE
+    ══════════════════════════════════════ */
+        .placeholder-page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            gap: 16px;
+            padding: 40px;
+        }
+
+        .placeholder-page.active {
+            display: flex;
+        }
+
+        .ph-icon {
+            font-size: 3.5rem;
+            opacity: 0.3;
+        }
+
+        .ph-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .ph-sub {
+            font-size: 0.9rem;
+            color: var(--clay-lt);
+            opacity: 0.65;
+            max-width: 360px;
+            line-height: 1.7;
+        }
+
+        .ph-tag {
+            display: inline-block;
+            background: rgba(212, 144, 10, 0.1);
+            border: 1px solid rgba(212, 144, 10, 0.25);
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+
+        /* ══════════════════════════════════════
+       REVENUE CHART PLACEHOLDER
+    ══════════════════════════════════════ */
+        .chart-area {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 100px;
+        }
+
+        .chart-bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .chart-bar {
+            width: 100%;
+            border-radius: 3px 3px 0 0;
+            background: rgba(27, 58, 45, 0.12);
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .chart-bar.highlight {
+            background: var(--green);
+        }
+
+        .chart-bar:hover {
+            background: var(--gold) !important;
+        }
+
+        .chart-day {
+            font-size: 0.6rem;
+            color: var(--clay-lt);
+            opacity: 0.5;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ══════════════════════════════════════
+       SCROLLBAR
+    ══════════════════════════════════════ */
+        .content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(27, 58, 45, 0.15);
+            border-radius: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .row-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            :root {
+                --sidebar-w: 200px;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    
+        .emp-table-wrap {
+            background: var(--ivory);
+            border: 1px solid #DDD5C4;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .emp-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .emp-table th {
+            font-size: 0.6rem;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            opacity: 0.6;
+            text-align: left;
+            padding: 10px 18px;
+            border-bottom: 1px solid #DDD5C4;
+            font-weight: 700;
+            background: rgba(237, 224, 200, 0.45);
+            white-space: nowrap;
+        }
+
+        .emp-table td {
+            padding: 13px 18px;
+            font-size: 0.83rem;
+            color: var(--clay);
+            border-bottom: 1px solid rgba(221, 213, 196, 0.45);
+            vertical-align: middle;
+        }
+
+        .emp-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .emp-table tr:hover td {
+            background: rgba(237, 224, 200, 0.3);
+        }
+
+        .emp-avatar-sm {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            color: var(--gold-lt);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .emp-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .role-Chef {
+            background: rgba(212, 144, 10, 0.12);
+            color: var(--gold);
+        }
+
+        .role-Cashier {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--blue);
+        }
+
+        .role-Waiter {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--teal);
+        }
+
+        .role-Delivery {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--amber);
+        }
+
+        .role-Manager {
+            background: rgba(27, 58, 45, 0.1);
+            color: var(--green);
+        }
+
+        .role-Cleaner {
+            background: rgba(107, 58, 32, 0.08);
+            color: var(--clay-lt);
+        }
+
+        .role-Helper {
+            background: rgba(107, 58, 32, 0.08);
+            color: var(--clay-lt);
+        }
+
+        .role-Other {
+            background: rgba(107, 58, 32, 0.08);
+            color: var(--clay-lt);
+        }
+
+        .join-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.76rem;
+            color: var(--clay-lt);
+            opacity: 0.65;
+        }
+
+        .phone-cell {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 6px;
+        }
+
+        .icon-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.13s;
+            background: transparent;
+        }
+
+        .icon-btn.edit:hover {
+            background: rgba(27, 58, 45, 0.08);
+        }
+
+        .icon-btn.del:hover {
+            background: rgba(225, 29, 72, 0.08);
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 56px 20px;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .empty-state .ei {
+            font-size: 3rem;
+            opacity: 0.2;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--green);
+        }
+
+        .empty-state p {
+            font-size: 0.83rem;
+            color: var(--clay-lt);
+            opacity: 0.6;
+            max-width: 280px;
+            line-height: 1.6;
+        }
+
+        /* ══ MODAL ════════════════════════════════════════ */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(18, 42, 32, 0.55);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--ivory);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.2s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        .modal-head {
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-head h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            opacity: 0.4;
+            transition: opacity 0.14s;
+            padding: 4px;
+        }
+
+        .modal-close:hover {
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--clay);
+        }
+
+        .field input,
+        .field select {
+            padding: 10px 12px;
+            border: 1.5px solid #DDD5C4;
+            border-radius: 6px;
+            background: #fff;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            color: var(--clay);
+            outline: none;
+            transition: border-color 0.14s;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--green);
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-foot {
+            padding: 16px 24px;
+            border-top: 1px solid #DDD5C4;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Confirm */
+        .confirm-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(18, 42, 32, 0.55);
+            z-index: 110;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .confirm-backdrop.open {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: var(--ivory);
+            border-radius: 10px;
+            padding: 26px 26px 20px;
+            max-width: 340px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .confirm-box .ci {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .confirm-box h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            color: var(--green);
+            margin-bottom: 7px;
+        }
+
+        .confirm-box p {
+            font-size: 0.82rem;
+            color: var(--clay-lt);
+            opacity: 0.72;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(60px);
+            background: var(--green);
+            color: var(--ivory);
+            padding: 11px 22px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: transform 0.22s, opacity 0.22s;
+            z-index: 300;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ══ RESPONSIVE ════════════════════════════════════ */
+        @media (max-width: 700px) {
+            :root {
+                --sw: 0px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .att-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Salary Specific CSS */
+.status-pending { background: rgba(225, 29, 72, 0.1); color: var(--rose); }
+.status-paid { background: rgba(13, 148, 136, 0.1); color: var(--teal); }
+
+</style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ══ SIDEBAR ══════════════════════════════════ -->
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+                <a class="brand-logo" href="dashboard.html">
+                    <div class="brand-icon">🌿</div>
+                    <div class="brand-text">
+                        <strong>GP Home Foods</strong>
+                        <span>Staff Portal</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <span class="nav-section-label">Main</span>
+
+                <button class="nav-item" onclick="window.location.href='dashboard.html'" data-page="dashboard">
+                    <div class="nav-icon">🏠</div>
+                    <span class="nav-label">Dashboard</span>
+                </button>
+
+                <span class="nav-section-label">Operations</span>
+
+                <button class="nav-item" onclick="window.location.href='billing.html'" data-page="billing">
+                    <div class="nav-icon">🧾</div>
+                    <span class="nav-label">Billing</span>
+                    <span class="nav-badge">New</span>
+                </button>
+
+                <button class="nav-item" onclick="window.location.href='delivery.html'" data-page="delivery">
+                    <div class="nav-icon">🛵</div>
+                    <span class="nav-label">Delivery Orders</span>
+                </button>
+
+                <span class="nav-section-label">Analytics</span>
+
+                <button class="nav-item" onclick="window.location.href='sales.html'" data-page="sales">
+                    <div class="nav-icon">📊</div>
+                    <span class="nav-label">Sales Analysis</span>
+                </button>
+
+                <button class="nav-item" onclick="window.location.href='revenue.html'" data-page="revenue">
+                    <div class="nav-icon">💰</div>
+                    <span class="nav-label">Revenue Analysis</span>
+                </button>
+
+                <span class="nav-section-label">Restaurant</span>
+
+                <button class="nav-item" onclick="window.location.href='menu.html'" data-page="menu">
+                    <div class="nav-icon">🍽️</div>
+                    <span class="nav-label">Menu</span>
+                </button>
+
+                <button class="nav-item" onclick="window.location.href='employees.html'" data-page="employees">
+                    <div class="nav-icon">👥</div>
+                    <span class="nav-label">Employees</span>
+                </button>
+
+                <button class="nav-item active" href="salary.html" data-page="salaries">
+                    <div class="nav-icon">💼</div>
+                    <span class="nav-label">Salaries</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="nav-item settings" onclick="window.location.href='settings.html'" data-page="settings">
+                    <div class="nav-icon">⚙️</div>
+                    <span class="nav-label">Settings</span>
+                </button>
+                <div class="user-card">
+                    <div class="user-avatar">GP</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Manager</div>
+                    </div>
+                    <button class="logout-btn" title="Logout" onclick="window.location.href='login.html'">⏻</button>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- ══ MAIN ══════════════════════════════════════ -->
+        <div class="main">
+
+            <!-- Top bar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h1 id="topbarTitle">Dashboard</h1>
+                    <p id="topbarSub">Overview of today's activity</p>
+                </div>
+                <div class="topbar-right">
+                    <span class="topbar-date" id="liveDate"></span>
+                    <button class="notif-btn" title="Notifications">
+                        🔔
+                        <span class="notif-dot"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            
+    <div class="content">
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="process" onclick="switchTab('process')">Process Salaries</button>
+            <button class="tab-btn" data-tab="history" onclick="switchTab('history')">Salary History</button>
+        </div>
+
+        <!-- Process Tab -->
+        <div id="tab-process" class="tab-pane active">
+            <div class="emp-table-wrap">
+                <table class="emp-table" id="salariesTable">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Role</th>
+                            <th>Base Salary</th>
+                            <th>Status (This Month)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="tab-history" class="tab-pane" style="display:none;">
+            <div class="emp-table-wrap">
+                <table class="emp-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Employee</th>
+                            <th>Month</th>
+                            <th>Base Salary</th>
+                            <th>Bonus</th>
+                            <th>Deductions</th>
+                            <th>Net Salary</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Salary Modal -->
+    <div class="modal-backdrop" id="salaryModal" onclick="bdClose(event)">
+        <div class="modal">
+            <div class="modal-head">
+                <h3 id="modalTitle">Process Salary</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="fEmpId">
+                <div class="field">
+                    <label>Month (YYYY-MM) *</label>
+                    <input type="month" id="fMonth">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Base Salary</label>
+                        <input type="number" id="fBase" readonly style="background: #e9e5db;">
+                    </div>
+                    <div class="field">
+                        <label>Net Salary</label>
+                        <input type="number" id="fNet" readonly style="background: #e9e5db; color: var(--green); font-weight: bold;">
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Bonus (₹)</label>
+                        <input type="number" id="fBonus" value="0" oninput="calcNet()">
+                    </div>
+                    <div class="field">
+                        <label>Deductions (₹)</label>
+                        <input type="number" id="fDeductions" value="0" oninput="calcNet()">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Status *</label>
+                    <select id="fStatus">
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSalary()">Save Record</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ══ Greeting & Date ════════════════════════════════════════════════════════════
+        (function () {
+            const now = new Date();
+            
+            // Set topbar title
+            const titleEl = document.getElementById('topbarTitle');
+            if (titleEl) titleEl.textContent = 'Salaries';
+            
+            const subEl = document.getElementById('topbarSub');
+            if (subEl) subEl.textContent = 'Process employee salaries';
+
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            document.getElementById('liveDate').textContent =
+                `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            
+            // Set current month default
+            document.getElementById('fMonth').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+        })();
+
+        // ══ Tab Navigation ═════════════════════════════════════════════════════════════
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+            
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.style.display = 'none');
+            document.getElementById('tab-' + tab).style.display = 'block';
+        }
+
+        // ══ Data State ════════════════════════════════════════════════════════════════
+        let employees = [];
+        let salaries = [];
+
+        // ══ API Fetching ══════════════════════════════════════════════════════════════
+        async function loadData() {
+            try {
+                const [empRes, salRes] = await Promise.all([
+                    fetch('/api/employees'),
+                    fetch('/api/salary')
+                ]);
+                employees = await empRes.json();
+                salaries = await salRes.json();
+                
+                renderSalaries();
+                renderHistory();
+            } catch (err) {
+                console.error("Failed to load data", err);
+                showToast("Failed to load data");
+            }
+        }
+
+        // ══ Rendering ═════════════════════════════════════════════════════════════════
+        function renderSalaries() {
+            const tbody = document.querySelector('#salariesTable tbody');
+            let rows = '';
+
+            const currentMonth = document.getElementById('fMonth').value || 
+                `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
+
+            if (employees.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No employees found. Add employees first.</td></tr>';
+                return;
+            }
+
+            employees.forEach(e => {
+                const salaryThisMonth = salaries.find(s => s.employeeId && s.employeeId.id === e.id && s.month === currentMonth);
+                
+                let statusBadge = '<span class="status-badge" style="background:#e0e0e0;color:#666;">Not Processed</span>';
+                if (salaryThisMonth) {
+                    const cls = salaryThisMonth.status === 'Paid' ? 'status-paid' : 'status-pending';
+                    statusBadge = `<span class="status-badge ${cls}">${salaryThisMonth.status}</span>`;
+                }
+
+                rows += `
+                <tr>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="font-weight:700; color:var(--green);">${e.name}</span>
+                        </div>
+                    </td>
+                    <td>${e.role}</td>
+                    <td style="font-family:'JetBrains Mono',monospace;">₹${e.salary || 0}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-primary" style="padding:6px 12px; font-size:0.75rem;" onclick="openModal('${e.id}')">
+                            Process
+                        </button>
+                    </td>
+                </tr>`;
+            });
+            tbody.innerHTML = rows;
+        }
+
+        function renderHistory() {
+            const tbody = document.querySelector('#historyTable tbody');
+            let rows = '';
+
+            if (salaries.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No salary records found.</td></tr>';
+                return;
+            }
+
+            salaries.forEach(s => {
+                const cls = s.status === 'Paid' ? 'status-paid' : 'status-pending';
+                const empName = s.employeeId ? s.employeeId.name : 'Unknown';
+                const dateStr = new Date(s.createdAt).toLocaleDateString();
+
+                rows += `
+                <tr>
+                    <td>${dateStr}</td>
+                    <td><strong style="color:var(--green)">${empName}</strong></td>
+                    <td>${s.month}</td>
+                    <td style="font-family:'JetBrains Mono',monospace;">₹${s.baseSalary}</td>
+                    <td style="font-family:'JetBrains Mono',monospace; color:var(--teal);">+₹${s.bonus}</td>
+                    <td style="font-family:'JetBrains Mono',monospace; color:var(--rose);">-₹${s.deductions}</td>
+                    <td style="font-family:'JetBrains Mono',monospace; font-weight:bold;">₹${s.netSalary}</td>
+                    <td><span class="status-badge ${cls}">${s.status}</span></td>
+                </tr>`;
+            });
+            tbody.innerHTML = rows;
+        }
+
+        // ══ Modal Logic ═══════════════════════════════════════════════════════════════
+        function openModal(empId) {
+            const e = employees.find(x => x.id === empId);
+            if (!e) return;
+
+            document.getElementById('modalTitle').textContent = `Process Salary: ${e.name}`;
+            document.getElementById('fEmpId').value = e.id;
+            
+            // Check if there is already a record for the current month
+            const month = document.getElementById('fMonth').value;
+            const existingRecord = salaries.find(s => s.employeeId && s.employeeId.id === e.id && s.month === month);
+            
+            if (existingRecord) {
+                document.getElementById('fBase').value = existingRecord.baseSalary;
+                document.getElementById('fBonus').value = existingRecord.bonus;
+                document.getElementById('fDeductions').value = existingRecord.deductions;
+                document.getElementById('fStatus').value = existingRecord.status;
+            } else {
+                document.getElementById('fBase').value = e.salary || 0;
+                document.getElementById('fBonus').value = 0;
+                document.getElementById('fDeductions').value = 0;
+                document.getElementById('fStatus').value = 'Pending';
+            }
+            
+            calcNet();
+            
+            document.getElementById('salaryModal').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('salaryModal').classList.remove('open');
+        }
+
+        function bdClose(e) {
+            if (e.target === document.getElementById('salaryModal')) closeModal();
+        }
+
+        function calcNet() {
+            const base = parseFloat(document.getElementById('fBase').value) || 0;
+            const bonus = parseFloat(document.getElementById('fBonus').value) || 0;
+            const deduc = parseFloat(document.getElementById('fDeductions').value) || 0;
+            document.getElementById('fNet').value = base + bonus - deduc;
+        }
+
+        async function saveSalary() {
+            const employeeId = document.getElementById('fEmpId').value;
+            const month = document.getElementById('fMonth').value;
+            const baseSalary = parseFloat(document.getElementById('fBase').value) || 0;
+            const bonus = parseFloat(document.getElementById('fBonus').value) || 0;
+            const deductions = parseFloat(document.getElementById('fDeductions').value) || 0;
+            const status = document.getElementById('fStatus').value;
+
+            if (!month) { showToast('Please select a month'); return; }
+
+            const payload = { employeeId, month, baseSalary, bonus, deductions, status };
+
+            // Check if we are updating or creating
+            const existingRecord = salaries.find(s => s.employeeId && s.employeeId.id === employeeId && s.month === month);
+            
+            try {
+                let res;
+                if (existingRecord) {
+                    res = await fetch('/api/salary/' + existingRecord.id, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    res = await fetch('/api/salary', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+                
+                if (res.ok) {
+                    showToast('Salary record saved successfully');
+                    closeModal();
+                    await loadData();
+                } else {
+                    const err = await res.json();
+                    showToast('Error: ' + err.message);
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to save record');
+            }
+        }
+
+        // ══ Toast ═════════════════════════════════════════════════════════════════════
+        let toastT;
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(toastT);
+            toastT = setTimeout(() => el.classList.remove('show'), 2400);
+        }
+
+        // ══ Keyboard ══════════════════════════════════════════════════════════════════
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Initialize
+        loadData();
+    </script>
+    </body>
+
+</html>

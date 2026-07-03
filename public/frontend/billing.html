@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GP Home Foods — Billing</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green: #1B3A2D;
+            --green-lt: #264D3B;
+            --green-dk: #122A20;
+            --ivory: #F7F0E3;
+            --coconut: #EDE0C8;
+            --gold: #D4900A;
+            --gold-lt: #F2B733;
+            --clay: #3C1F0F;
+            --clay-lt: #6B3A20;
+            --teal: #0D9488;
+            --rose: #E11D48;
+            --blue: #3B82F6;
+            --sw: 240px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Lato', sans-serif;
+            background: #F0EBE0;
+            color: var(--clay);
+            overflow: hidden;
+        }
+
+        /* ══ LAYOUT ══════════════════════════════════════ */
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* ══ SIDEBAR ═════════════════════════════════════ */
+        .sidebar {
+            width: var(--sw);
+            background: var(--green-dk);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .sidebar-brand {
+            padding: 22px 20px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(212, 144, 10, 0.15);
+            border: 1px solid rgba(212, 144, 10, 0.35);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        .brand-text span {
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.8;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 14px 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .nav-sec {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(237, 224, 200, 0.35);
+            padding: 10px 10px 6px;
+            margin-top: 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            border: none;
+            background: none;
+            width: 100%;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-item.active {
+            background: rgba(212, 144, 10, 0.14);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            bottom: 25%;
+            width: 3px;
+            background: var(--gold);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active .nav-icon {
+            background: rgba(212, 144, 10, 0.2);
+        }
+
+        .nav-label {
+            font-size: 0.85rem;
+            color: rgba(237, 224, 200, 0.65);
+            flex: 1;
+        }
+
+        .nav-item.active .nav-label {
+            color: var(--gold-lt);
+            font-weight: 700;
+        }
+
+        .nav-badge {
+            font-size: 0.6rem;
+            background: var(--gold);
+            color: var(--green-dk);
+            border-radius: 10px;
+            padding: 2px 7px;
+            font-weight: 700;
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-top: 4px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--green-lt);
+            border: 1.5px solid rgba(212, 144, 10, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--gold-lt);
+            font-weight: 700;
+        }
+
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 0.78rem;
+            color: var(--coconut);
+            font-weight: 700;
+        }
+
+        .user-role {
+            font-size: 0.62rem;
+            color: var(--gold);
+            opacity: 0.7;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.4;
+            padding: 4px;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ══ MAIN ════════════════════════════════════════ */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .topbar {
+            height: 64px;
+            background: var(--ivory);
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            flex-shrink: 0;
+        }
+
+        .topbar-left h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .topbar-left p {
+            font-size: 0.75rem;
+            color: var(--clay-lt);
+            opacity: 0.7;
+            margin-top: 1px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bill-no-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            background: rgba(27, 58, 45, 0.08);
+            color: var(--green);
+            padding: 5px 12px;
+            border-radius: 5px;
+            letter-spacing: 0.06em;
+        }
+
+        /* ══ POS BODY ════════════════════════════════════ */
+        .pos-body {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            overflow: hidden;
+        }
+
+        /* ── LEFT: Menu browser ── */
+        .menu-browser {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-right: 1px solid #DDD5C4;
+            background: #F0EBE0;
+        }
+
+        .browser-toolbar {
+            padding: 14px 18px;
+            background: var(--ivory);
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.4;
+            pointer-events: none;
+            font-size: 0.85rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 9px 11px 9px 32px;
+            border: 1.5px solid #DDD5C4;
+            border-radius: 6px;
+            background: #fff;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.85rem;
+            color: var(--clay);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .search-input:focus {
+            border-color: var(--green);
+        }
+
+        .cat-scroll {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .cat-scroll::-webkit-scrollbar {
+            height: 0;
+        }
+
+        .cat-pill {
+            padding: 5px 13px;
+            border-radius: 20px;
+            border: 1.5px solid #DDD5C4;
+            background: transparent;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--clay-lt);
+            white-space: nowrap;
+            font-family: 'Lato', sans-serif;
+            transition: all 0.12s;
+        }
+
+        .cat-pill:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .cat-pill.active {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--gold-lt);
+        }
+
+        .dish-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 10px;
+            align-content: start;
+        }
+
+        .dish-grid::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .dish-grid::-webkit-scrollbar-thumb {
+            background: rgba(27, 58, 45, 0.12);
+            border-radius: 2px;
+        }
+
+        .dish-tile {
+            background: var(--ivory);
+            border: 1.5px solid #DDD5C4;
+            border-radius: 10px;
+            padding: 14px 14px 12px;
+            cursor: pointer;
+            user-select: none;
+            transition: border-color 0.12s, box-shadow 0.12s, transform 0.1s;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .dish-tile:hover {
+            border-color: var(--green);
+            box-shadow: 0 3px 14px rgba(27, 58, 45, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .dish-tile:active {
+            transform: scale(0.97);
+        }
+
+        .dish-tile.unavail {
+            opacity: 0.38;
+            pointer-events: none;
+        }
+
+        .tile-emoji {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .tile-name {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--green);
+            line-height: 1.3;
+        }
+
+        .tile-cat {
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .tile-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.92rem;
+            color: var(--clay);
+            margin-top: 2px;
+        }
+
+        .empty-menu {
+            grid-column: 1/-1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .empty-menu p {
+            font-size: 0.85rem;
+            color: var(--clay-lt);
+            opacity: 0.55;
+        }
+
+        .empty-menu a {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ── RIGHT: Bill panel ── */
+        .bill-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--ivory);
+            overflow: hidden;
+        }
+
+        /* Customer row */
+        .customer-row {
+            padding: 14px 18px 10px;
+            border-bottom: 1px solid #DDD5C4;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .cust-input {
+            flex: 1;
+            padding: 8px 11px;
+            border: 1.5px solid #DDD5C4;
+            border-radius: 6px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.83rem;
+            color: var(--clay);
+            outline: none;
+            background: #fff;
+            transition: border-color 0.15s;
+        }
+
+        .cust-input:focus {
+            border-color: var(--green);
+        }
+
+        .table-input {
+            width: 70px;
+        }
+
+        /* Order lines */
+        .order-lines {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .order-lines::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .order-lines::-webkit-scrollbar-thumb {
+            background: rgba(27, 58, 45, 0.12);
+            border-radius: 2px;
+        }
+
+        .order-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 8px;
+            opacity: 0.35;
+        }
+
+        .order-empty span {
+            font-size: 2.5rem;
+        }
+
+        .order-empty p {
+            font-size: 0.8rem;
+            color: var(--clay-lt);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .order-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-bottom: 1px solid rgba(221, 213, 196, 0.5);
+        }
+
+        .ol-emoji {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .ol-name {
+            flex: 1;
+            font-size: 0.83rem;
+            font-weight: 700;
+            color: var(--clay);
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ol-qty {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 5px;
+            border: 1.5px solid #DDD5C4;
+            background: #fff;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--clay);
+            transition: background 0.1s;
+            line-height: 1;
+        }
+
+        .qty-btn:hover {
+            background: var(--coconut);
+        }
+
+        .qty-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            width: 22px;
+            text-align: center;
+            color: var(--clay);
+        }
+
+        .ol-total {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--green);
+            width: 52px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .ol-del {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            opacity: 0.3;
+            transition: opacity 0.15s;
+            padding: 3px;
+            flex-shrink: 0;
+        }
+
+        .ol-del:hover {
+            opacity: 0.8;
+        }
+
+        /* Totals */
+        .totals-section {
+            padding: 12px 18px;
+            border-top: 1px solid #DDD5C4;
+            background: var(--coconut);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 0;
+        }
+
+        .total-row span {
+            font-size: 0.8rem;
+            color: var(--clay-lt);
+        }
+
+        .total-row .val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--clay);
+        }
+
+        .total-row.grand span {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .total-row.grand .val {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .total-divider {
+            height: 1px;
+            background: rgba(27, 58, 45, 0.1);
+            margin: 6px 0;
+        }
+
+        /* GST toggle */
+        .gst-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+
+        .gst-label {
+            font-size: 0.78rem;
+            color: var(--clay-lt);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mini-toggle {
+            width: 28px;
+            height: 16px;
+            background: #DDD5C4;
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .mini-toggle.on {
+            background: var(--teal);
+        }
+
+        .mini-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.18s;
+        }
+
+        .mini-toggle.on::after {
+            transform: translateX(12px);
+        }
+
+        /* Payment */
+        .payment-section {
+            padding: 12px 18px 14px;
+            border-top: 1px solid #DDD5C4;
+        }
+
+        .pay-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+            margin-bottom: 8px;
+        }
+
+        .pay-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px;
+            margin-bottom: 10px;
+        }
+
+        .pay-btn {
+            padding: 9px 6px;
+            border-radius: 7px;
+            border: 1.5px solid #DDD5C4;
+            background: #fff;
+            cursor: pointer;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--clay-lt);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            transition: all 0.12s;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .pay-btn .pay-icon {
+            font-size: 1.1rem;
+        }
+
+        .pay-btn:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .pay-btn.active {
+            border-color: var(--green);
+            background: var(--green);
+            color: var(--gold-lt);
+        }
+
+        /* Split inputs */
+        .split-inputs {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .split-inputs.visible {
+            display: grid;
+        }
+
+        .split-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .split-field label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--clay-lt);
+        }
+
+        .split-field input {
+            padding: 8px 10px;
+            border: 1.5px solid #DDD5C4;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            color: var(--clay);
+            outline: none;
+            background: #fff;
+            transition: border-color 0.15s;
+        }
+
+        .split-field input:focus {
+            border-color: var(--green);
+        }
+
+        /* Action buttons */
+        .bill-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 11px 14px;
+            border-radius: 7px;
+            border: none;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: var(--gold-lt);
+        }
+
+        .btn-primary:hover {
+            background: var(--green-lt);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--clay-lt);
+            border: 1.5px solid #DDD5C4;
+        }
+
+        .btn-ghost:hover {
+            background: var(--coconut);
+        }
+
+        .btn-danger {
+            background: rgba(225, 29, 72, 0.06);
+            color: var(--rose);
+            border: 1px solid rgba(225, 29, 72, 0.18);
+        }
+
+        .btn-danger:hover {
+            background: rgba(225, 29, 72, 0.12);
+        }
+
+        .btn-full {
+            grid-column: 1/-1;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(60px);
+            background: var(--green);
+            color: var(--ivory);
+            padding: 11px 22px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: transform 0.25s, opacity 0.25s;
+            z-index: 300;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ══ PRINT RECEIPT ════════════════════════════════ */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+                color: #000;
+            }
+            .app, .toast {
+                display: none !important;
+            }
+            .print-receipt {
+                display: block !important;
+            }
+        }
+
+        /* ══ SCROLLBAR ════════════════════════════════════ */
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="printReceipt" class="print-receipt" style="display: none;"></div>
+    <div class="app">
+
+        <!-- ══ SIDEBAR ══════════════════════════════════════ -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <a class="brand-logo" href="dashboard.html">
+                    <div class="brand-icon">🌿</div>
+                    <div class="brand-text">
+                        <strong>GP Home Foods</strong>
+                        <span>Staff Portal</span>
+                    </div>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <span class="nav-sec">Main</span>
+                <a class="nav-item" href="dashboard.html">
+                    <div class="nav-icon">🏠</div><span class="nav-label">Dashboard</span>
+                </a>
+                <span class="nav-sec">Operations</span>
+                <a class="nav-item active" href="billing.html">
+                    <div class="nav-icon">🧾</div><span class="nav-label">Billing</span>
+                </a>
+                <a class="nav-item" href="delivery.html">
+                    <div class="nav-icon">🛵</div><span class="nav-label">Delivery Orders</span>
+                </a>
+                <span class="nav-sec">Analytics</span>
+                <a class="nav-item" href="sales.html">
+                    <div class="nav-icon">📊</div><span class="nav-label">Sales Analysis</span>
+                </a>
+                <a class="nav-item" href="revenue.html">
+                    <div class="nav-icon">💰</div><span class="nav-label">Revenue Analysis</span>
+                </a>
+                <span class="nav-sec">Restaurant</span>
+                <a class="nav-item" href="menu.html">
+                    <div class="nav-icon">🍽️</div><span class="nav-label">Menu</span>
+                </a>
+                <a class="nav-item" href="employees.html">
+                    <div class="nav-icon">👥</div><span class="nav-label">Employees</span>
+                </a>
+                <a class="nav-item" href="salary.html">
+                    <div class="nav-icon">💼</div><span class="nav-label">Salaries</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a class="nav-item" href="settings.html">
+                    <div class="nav-icon">⚙️</div><span class="nav-label"
+                        style="color:rgba(237,224,200,0.5)">Settings</span>
+                </a>
+                <div class="user-card">
+                    <div class="user-avatar">GP</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Manager</div>
+                    </div>
+                    <button class="logout-btn" onclick="location.href='login.html'">⏻</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ══ MAIN ══════════════════════════════════════════ -->
+        <div class="main">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h1>Billing</h1>
+                    <p>Select dishes from the menu and generate a bill</p>
+                </div>
+                <div class="topbar-right">
+                    <span class="bill-no-badge" id="billNoBadge">Bill #—</span>
+                </div>
+            </div>
+
+            <div class="pos-body">
+
+                <!-- ── LEFT: Menu browser ── -->
+                <div class="menu-browser">
+                    <div class="browser-toolbar">
+                        <div class="search-wrap">
+                            <span class="search-icon">🔍</span>
+                            <input class="search-input" id="menuSearch" type="text" placeholder="Search dishes…"
+                                oninput="renderDishes()" />
+                        </div>
+                        <div class="cat-scroll" id="catScroll"></div>
+                    </div>
+                    <div class="dish-grid" id="dishGrid"></div>
+                </div>
+
+                <!-- ── RIGHT: Bill panel ── -->
+                <div class="bill-panel">
+
+
+
+                    <!-- Customer -->
+                    <div class="customer-row">
+                        <input class="cust-input" id="custName" type="text" placeholder="Customer name (optional)" />
+                        <input class="cust-input table-input" id="tableNo" type="text" placeholder="Table #" />
+                    </div>
+
+                    <!-- Order lines -->
+                    <div class="order-lines" id="orderLines">
+                        <div class="order-empty" id="orderEmpty">
+                            <span>🍽️</span>
+                            <p>Tap dishes from the menu<br />to add them here</p>
+                        </div>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="totals-section">
+                        <div class="total-row">
+                            <span>Subtotal</span>
+                            <span class="val" id="tSubtotal">₹0</span>
+                        </div>
+                        <div class="gst-row" id="sgstRow" style="display:none;">
+                            <span class="gst-label">SGST (2.5%)</span>
+                            <span class="val" id="tSgst" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem">₹0</span>
+                        </div>
+                        <div class="gst-row" id="cgstRow" style="display:none;">
+                            <span class="gst-label">CGST (2.5%)</span>
+                            <span class="val" id="tCgst" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem">₹0</span>
+                        </div>
+                        <div class="gst-row gst-toggle-row">
+                            <span class="gst-label">
+                                <button class="mini-toggle" id="gstToggle" onclick="toggleGst()"></button>
+                                Apply GST
+                            </span>
+                        </div>
+                        <div class="total-divider"></div>
+                        <div class="total-row grand">
+                            <span>Total</span>
+                            <span class="val" id="tTotal">₹0</span>
+                        </div>
+                    </div>
+
+                    <!-- Payment -->
+                    <div class="payment-section">
+                        <div class="pay-label">Payment Method</div>
+                        <div class="pay-methods">
+                            <button class="pay-btn active" data-method="cash" onclick="selectPay(this)">
+                                <span class="pay-icon">💵</span>Cash
+                            </button>
+                            <button class="pay-btn" data-method="upi" onclick="selectPay(this)">
+                                <span class="pay-icon">📱</span>UPI
+                            </button>
+                            <button class="pay-btn" data-method="split" onclick="selectPay(this)">
+                                <span class="pay-icon">✂️</span>Split
+                            </button>
+                        </div>
+
+                        <!-- Split inputs -->
+                        <div class="split-inputs" id="splitInputs">
+                            <div class="split-field">
+                                <label>Cash (₹)</label>
+                                <input type="number" id="splitCash" placeholder="0" min="0" oninput="calcSplit()" />
+                            </div>
+                            <div class="split-field">
+                                <label>UPI (₹)</label>
+                                <input type="number" id="splitUpi" placeholder="0" min="0" oninput="calcSplit()" />
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="bill-actions">
+                            <button class="btn btn-ghost" onclick="clearBill()">🗑 Clear</button>
+                            <button class="btn btn-ghost" onclick="printBill()">🖨 Print</button>
+                            <button class="btn btn-primary btn-full" onclick="settleBill()">✓ Settle &amp; Save
+                                Bill</button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ══ CONSTANTS ═════════════════════════════════════════
+        const MENU_KEY = 'gp_menu_items';
+        const BILLS_KEY = 'gp_bills';
+        const CATS = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Tandoori', 'Veg Gravy', 'Non-Veg Gravy', 'Breads', 'Veg Dry Items', 'Non-Veg Dry Items', 'Beverages'];
+
+        // ══ STATE ════════════════════════════════════════════
+        let menuItems = [];
+        let order = [];       // [{dish, qty}]
+        let activeCat = 'All';
+        let payMethod = 'cash';
+        let gstOn = false;
+        let billNo = 1;
+
+        // ══ BOOT ═════════════════════════════════════════════
+        async function boot() {
+            try {
+                // Fetch menu from backend API
+                const res = await fetch('/api/menu');
+                if (res.ok) {
+                    menuItems = await res.json();
+                    menuItems = menuItems.map(m => ({ ...m, id: m._id }));
+                } else {
+                    console.error('Failed to load menu');
+                    menuItems = [];
+                }
+            } catch (err) {
+                console.error('Error fetching menu:', err);
+                menuItems = [];
+            }
+
+            // Determine next bill number by fetching latest bill or just using local count
+            try {
+                const res = await fetch('/api/billing');
+                if (res.ok) {
+                    const bills = await res.json();
+                    billNo = bills.length > 0 ? (bills[0].billNo + 1) : 1;
+                } else {
+                    const bills = JSON.parse(localStorage.getItem(BILLS_KEY) || '[]');
+                    billNo = bills.length + 1;
+                }
+            } catch(e) {
+                const bills = JSON.parse(localStorage.getItem(BILLS_KEY) || '[]');
+                billNo = bills.length + 1;
+            }
+            
+            document.getElementById('billNoBadge').textContent = 'Bill #' + String(billNo).padStart(4, '0');
+
+            buildCats();
+            renderDishes();
+            renderOrder();
+        }
+
+        // ══ CATEGORY TABS ═════════════════════════════════════
+        function buildCats() {
+            const wrap = document.getElementById('catScroll');
+            wrap.innerHTML = '';
+            CATS.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = 'cat-pill' + (c === activeCat ? ' active' : '');
+                btn.textContent = c;
+                btn.onclick = () => { activeCat = c; buildCats(); renderDishes(); };
+                wrap.appendChild(btn);
+            });
+        }
+
+        // ══ DISH GRID ═════════════════════════════════════════
+        function renderDishes() {
+            const grid = document.getElementById('dishGrid');
+            const search = document.getElementById('menuSearch').value.toLowerCase();
+            grid.innerHTML = '';
+
+            if (menuItems.length === 0) {
+                const div = document.createElement('div');
+                div.className = 'empty-menu';
+                div.innerHTML = `<span style="font-size:2rem;opacity:.25">🍽️</span>
+      <p>No dishes in the menu yet.<br/><a href="menu.html">Go to Menu</a> to add dishes first.</p>`;
+                grid.appendChild(div); return;
+            }
+
+            const filtered = menuItems.filter(d => {
+                const matchCat = activeCat === 'All' || d.category === activeCat;
+                const matchQ = d.name.toLowerCase().includes(search) || d.category.toLowerCase().includes(search);
+                return matchCat && matchQ;
+            });
+
+            if (filtered.length === 0) {
+                const div = document.createElement('div');
+                div.className = 'empty-menu';
+                div.innerHTML = `<p>No dishes match your search.</p>`;
+                grid.appendChild(div); return;
+            }
+
+            filtered.forEach(d => {
+                const tile = document.createElement('div');
+                tile.className = 'dish-tile' + (!d.available ? ' unavail' : '');
+                tile.innerHTML = `
+      <div class="tile-emoji">${d.emoji}</div>
+      <div class="tile-name">${esc(d.name)}</div>
+      <div class="tile-cat">${esc(d.category)}</div>
+      <div class="tile-price">₹${fmt(d.price)}</div>`;
+                if (d.available) tile.onclick = () => addToOrder(d);
+                grid.appendChild(tile);
+            });
+        }
+
+        // ══ ORDER ════════════════════════════════════════════
+        function addToOrder(dish) {
+            const existing = order.find(l => l.dish.id === dish.id);
+            if (existing) { existing.qty++; }
+            else { order.push({ dish, qty: 1 }); }
+            renderOrder();
+            flashTile(dish.id);
+        }
+
+        function changeQty(id, delta) {
+            const line = order.find(l => l.dish.id === id);
+            if (!line) return;
+            line.qty += delta;
+            if (line.qty <= 0) order = order.filter(l => l.dish.id !== id);
+            renderOrder();
+        }
+
+        function setQty(id, val) {
+            const line = order.find(l => l.dish.id === id);
+            if (!line) return;
+            const v = parseInt(val, 10);
+            if (isNaN(v) || v <= 0) {
+                removeLine(id);
+            } else {
+                line.qty = v;
+                renderOrder();
+            }
+        }
+
+        function removeLine(id) {
+            order = order.filter(l => l.dish.id !== id);
+            renderOrder();
+        }
+
+        function renderOrder() {
+            const wrap = document.getElementById('orderLines');
+            const empty = document.getElementById('orderEmpty');
+
+            // Remove existing lines
+            Array.from(wrap.querySelectorAll('.order-line')).forEach(el => el.remove());
+
+            if (order.length === 0) {
+                empty.style.display = 'flex';
+                updateTotals();
+                return;
+            }
+            empty.style.display = 'none';
+
+            order.forEach(l => {
+                const div = document.createElement('div');
+                div.className = 'order-line';
+                div.innerHTML = `
+      <span class="ol-emoji">${l.dish.emoji}</span>
+      <div class="ol-details" style="flex:1; display:flex; gap:10px; align-items:center; min-width:0;">
+          <span class="ol-name">${esc(l.dish.name)}</span>
+          <span class="ol-rate" style="width:45px; font-family:'JetBrains Mono', monospace; font-size: 0.8rem; color:var(--clay-lt)">₹${fmt(l.dish.price)}</span>
+      </div>
+      <div class="ol-qty">
+        <input type="number" class="qty-input" style="width:40px; padding:2px; text-align:center; font-family:'JetBrains Mono', monospace; border:1.5px solid #DDD5C4; border-radius:4px; outline:none; background:#fff; font-size: 0.85rem; color: var(--clay);" value="${l.qty}" min="1" onchange="setQty('${l.dish.id}', this.value)">
+      </div>
+      <span class="ol-total">₹${fmt(l.dish.price * l.qty)}</span>
+      <button class="ol-del" onclick="removeLine('${l.dish.id}')">✕</button>`;
+                wrap.appendChild(div);
+            });
+
+            updateTotals();
+        }
+
+        function flashTile(id) {
+            // brief visual feedback on tile when added
+            const tiles = document.querySelectorAll('.dish-tile');
+            // no-op — tile active state via :active CSS is sufficient
+        }
+
+        // ══ TOTALS ════════════════════════════════════════════
+        function updateTotals() {
+            const subtotal = order.reduce((s, l) => s + l.dish.price * l.qty, 0);
+            const sgst = gstOn ? Math.round(subtotal * 0.025) : 0;
+            const cgst = gstOn ? Math.round(subtotal * 0.025) : 0;
+            const gst = sgst + cgst;
+            const total = subtotal + gst;
+            document.getElementById('tSubtotal').textContent = '₹' + fmt(subtotal);
+            
+            const sgstRow = document.getElementById('sgstRow');
+            const cgstRow = document.getElementById('cgstRow');
+            if (gstOn) {
+                sgstRow.style.display = 'flex';
+                cgstRow.style.display = 'flex';
+                document.getElementById('tSgst').textContent = '₹' + fmt(sgst);
+                document.getElementById('tCgst').textContent = '₹' + fmt(cgst);
+            } else {
+                sgstRow.style.display = 'none';
+                cgstRow.style.display = 'none';
+            }
+
+            document.getElementById('tTotal').textContent = '₹' + fmt(total);
+            return { subtotal, gst, total };
+        }
+
+        // ══ GST ══════════════════════════════════════════════
+        function toggleGst() {
+            gstOn = !gstOn;
+            const btn = document.getElementById('gstToggle');
+            btn.classList.toggle('on', gstOn);
+            updateTotals();
+        }
+
+        // ══ PAYMENT ══════════════════════════════════════════
+        function selectPay(btn) {
+            document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            payMethod = btn.dataset.method;
+            const splitWrap = document.getElementById('splitInputs');
+            if (payMethod === 'split') { splitWrap.classList.add('visible'); }
+            else { splitWrap.classList.remove('visible'); }
+        }
+
+        function calcSplit() {
+            const { total } = updateTotals();
+            const cash = parseFloat(document.getElementById('splitCash').value) || 0;
+            const upi = parseFloat(document.getElementById('splitUpi').value) || 0;
+            const diff = total - cash - upi;
+            // Visual cue: if balanced, border goes green
+            const cashEl = document.getElementById('splitCash');
+            const upiEl = document.getElementById('splitUpi');
+            const ok = Math.abs(diff) < 1;
+            cashEl.style.borderColor = ok ? 'var(--teal)' : '#DDD5C4';
+            upiEl.style.borderColor = ok ? 'var(--teal)' : '#DDD5C4';
+        }
+
+        // ══ SETTLE ════════════════════════════════════════════
+        async function settleBill() {
+            if (order.length === 0) { showToast('Add at least one dish'); return; }
+
+            const { subtotal, gst, total } = updateTotals();
+
+            // Validate split
+            if (payMethod === 'split') {
+                const cash = parseFloat(document.getElementById('splitCash').value) || 0;
+                const upi = parseFloat(document.getElementById('splitUpi').value) || 0;
+                if (Math.abs(total - cash - upi) > 1) {
+                    showToast('Split amounts don\'t add up to ₹' + fmt(total)); return;
+                }
+            }
+
+            const bill = {
+                id: 'B' + String(billNo).padStart(4, '0'),
+                billNo,
+                date: new Date().toISOString(),
+                customer: document.getElementById('custName').value.trim() || 'Walk-in',
+                table: document.getElementById('tableNo').value.trim() || '—',
+                items: order.map(l => ({ name: l.dish.name, emoji: l.dish.emoji, qty: l.qty, price: l.dish.price, total: l.dish.price * l.qty })),
+                subtotal, gst, total,
+                payMethod,
+                splitCash: payMethod === 'split' ? parseFloat(document.getElementById('splitCash').value) || 0 : null,
+                splitUpi: payMethod === 'split' ? parseFloat(document.getElementById('splitUpi').value) || 0 : null,
+            };
+
+            try {
+                // Save to Backend API
+                const res = await fetch('/api/billing', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bill)
+                });
+                
+                if (res.ok) {
+                    const savedBill = await res.json();
+                    
+                    // Also save to localStorage for local history if needed
+                    const bills = JSON.parse(localStorage.getItem(BILLS_KEY) || '[]');
+                    bills.push(savedBill);
+                    localStorage.setItem(BILLS_KEY, JSON.stringify(bills));
+
+                    showToast('Bill #' + bill.id + ' saved ✓');
+                    billNo++;
+                    document.getElementById('billNoBadge').textContent = 'Bill #' + String(billNo).padStart(4, '0');
+                    clearBill(false);
+                } else {
+                    console.error('Failed to save bill on server');
+                    showToast('Failed to save bill to server');
+                }
+            } catch (err) {
+                console.error('Error saving bill:', err);
+                showToast('Error saving bill to server');
+            }
+        }
+
+        // ══ PRINT ════════════════════════════════════════════
+        function printBill() {
+            if (order.length === 0) { showToast('Nothing to print'); return; }
+            const { subtotal, gst, total } = updateTotals();
+
+            const now = new Date();
+            const dd = String(now.getDate()).padStart(2, '0');
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const yy = String(now.getFullYear()).slice(-2);
+            const dStr = `${dd}/${mm}/${yy}`;
+            const hr = String(now.getHours()).padStart(2, '0');
+            const mn = String(now.getMinutes()).padStart(2, '0');
+            const tStr = `${hr}:${mn}`;
+            
+            const custName = document.getElementById('custName').value || '';
+            const tableNo = document.getElementById('tableNo').value || '';
+            
+            let html = `
+                <div style="font-family: sans-serif; font-size: 14px; width: 300px; margin: 0 auto; color: #000;">
+                    <div style="text-align: center; font-weight: bold; font-size: 16px;">GP Home Foods And<br>Restaurant</div>
+                    <div style="text-align: center; margin-top: 5px;">Ph no: 08577 235251</div>
+                    <hr style="border: none; border-top: 1px solid #000; margin: 10px 0;">
+                    <div>Name: ${custName}</div>
+                    <hr style="border: none; border-top: 1px solid #000; margin: 10px 0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Date: ${dStr}</span>
+                        <span style="font-weight: bold;">Dine In: ${tableNo}</span>
+                    </div>
+                    <div>${tStr}</div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Cashier: deepa</span>
+                        <span>Bill No.: ${billNo}</span>
+                    </div>
+                    <hr style="border: none; border-top: 1px solid #000; margin: 10px 0;">
+                    <table style="width: 100%; text-align: left; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr>
+                                <th style="font-weight: normal;">Item</th>
+                                <th style="text-align: right; font-weight: normal;">Qty.</th>
+                                <th style="text-align: right; font-weight: normal;">Price</th>
+                                <th style="text-align: right; font-weight: normal;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            let totQty = 0;
+            order.forEach(l => {
+                totQty += l.qty;
+                html += `
+                            <tr>
+                                <td>${esc(l.dish.name)}</td>
+                                <td style="text-align: right;">${l.qty}</td>
+                                <td style="text-align: right;">${Number(l.dish.price).toFixed(2)}</td>
+                                <td style="text-align: right;">${(l.qty * l.dish.price).toFixed(2)}</td>
+                            </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                    <hr style="border: none; border-top: 1px solid #000; margin: 10px 0;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Total Qty: ${totQty}</span>
+                        <span>Sub Total</span>
+                        <span>${subtotal.toFixed(2)}</span>
+                    </div>
+            `;
+            
+            if (gstOn) {
+                html += `
+                    <div style="display: flex; justify-content: space-between;">
+                        <span></span>
+                        <span>GST (5%)</span>
+                        <span>${gst.toFixed(2)}</span>
+                    </div>
+                `;
+            }
+            
+            html += `
+                    <hr style="border: none; border-top: 1px solid #000; margin: 10px 0;">
+                    <div style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 16px;">
+                        <span style="margin-right: 20px;">Grand Total</span>
+                        <span>₹ ${total.toFixed(2)}</span>
+                    </div>
+                    <hr style="border: none; border-top: 1px solid #000; margin: 10px 0;">
+                    <div style="text-align: center;">Thanks</div>
+                </div>
+            `;
+            
+            document.getElementById('printReceipt').innerHTML = html;
+            window.print();
+        }
+
+        // ══ CLEAR ════════════════════════════════════════════
+        function clearBill(notify = true) {
+            order = [];
+            document.getElementById('custName').value = '';
+            document.getElementById('tableNo').value = '';
+            document.getElementById('splitCash').value = '';
+            document.getElementById('splitUpi').value = '';
+            gstOn = false;
+            document.getElementById('gstToggle').classList.remove('on');
+            payMethod = 'cash';
+            document.querySelectorAll('.pay-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+            document.getElementById('splitInputs').classList.remove('visible');
+            renderOrder();
+            if (notify) showToast('Bill cleared');
+        }
+
+        // ══ HELPERS ══════════════════════════════════════════
+        function fmt(n) { return Number(n).toLocaleString('en-IN'); }
+        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        let toastT;
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(toastT);
+            toastT = setTimeout(() => el.classList.remove('show'), 2600);
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') clearBill();
+        });
+
+        boot();
+    </script>
+</body>
+
+</html>
